@@ -1,0 +1,15 @@
+apiVersion: v2
+name: values
+description: Echo the values
+home: https://github.com/jkroepke/helm-charts
+version: 1.0.0
+maintainers:
+  - name: jkroepke
+    email: github@jkroepke.de
+    url: https://github.com/jkroepke
+keywords:
+  - helm
+  - value
+  - values
+sources:
+  - https://github.com/jkroepke/helm-charts
