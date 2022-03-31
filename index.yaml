@@ -1,10 +1,26 @@
 apiVersion: v1
 entries:
+  amazon-eks-pod-identity-webhook:
+  - apiVersion: v2
+    appVersion: v0.4.0
+    created: "2022-03-31T23:33:01.54583626Z"
+    description: A Kubernetes webhook for pods that need AWS IAM access
+    digest: d9e7a8eb870a163cb8fc9096e12de4ab1869421e88a3dc911bb00c24ce3c285c
+    maintainers:
+    - email: github@jkroepke.de
+      name: jkroepke
+      url: https://github.com/jkroepke
+    name: amazon-eks-pod-identity-webhook
+    type: application
+    urls:
+    - https://github.com/jkroepke/helm-charts/releases/download/amazon-eks-pod-identity-webhook-0.1.0/amazon-eks-pod-identity-webhook-0.1.0.tgz
+    version: 0.1.0
   keycloak-config-cli:
   - apiVersion: v2
     appVersion: 4.3.0
     created: "2021-11-27T23:11:31.0141506Z"
-    description: Import JSON-formatted configuration files into Keycloak - Configuration as Code for Keycloak.
+    description: Import JSON-formatted configuration files into Keycloak - Configuration
+      as Code for Keycloak.
     digest: 18dbe490b2b7d87161693f63d047786e71f4e43070570c650f8bfc7f03eed841
     home: https://github.com/adorsys/keycloak-config-cli
     keywords:
@@ -27,7 +43,8 @@ entries:
   - apiVersion: v2
     appVersion: 2.6.2
     created: "2020-11-29T12:30:54.543527867Z"
-    description: Import JSON-formatted configuration files into Keycloak - Configuration as Code for Keycloak.
+    description: Import JSON-formatted configuration files into Keycloak - Configuration
+      as Code for Keycloak.
     digest: 7d7e4b65e4e894cc37dfbc5e62c801699f0deb7c767f6f815c18c55a0909ca4d
     home: https://github.com/jkroepke/charts
     keywords:
@@ -68,4 +85,4 @@ entries:
     urls:
     - https://github.com/jkroepke/helm-charts/releases/download/values-1.0.0/values-1.0.0.tgz
     version: 1.0.0
-generated: "2020-11-29T12:30:54.426741613Z"
+generated: "2022-03-31T23:33:01.546367977Z"
