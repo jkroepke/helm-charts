@@ -3,15 +3,15 @@ fullnameOverride: ""
 nameOverride: ""
 
 image:
-  repository: docker.io/adorsys/keycloak-config-cli
-  tag: "v{{ .Chart.AppVersion }}-11.0.3"
+  repository: quay.io/adorsys/keycloak-config-cli
+  tag: "{{ .Chart.AppVersion }}-17.0.1"
   pullPolicy: IfNotPresent
   ## Optionally specify an array of imagePullSecrets.
   ## Secrets must be manually created in the namespace.
   ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
   ##
   pullSecrets: []
-  # - myRegistrKeySecretName
+  # - myRegistryKeySecretName
 
 # Count of re(!)tries. A value of 2 means 3 tries in total.
 backoffLimit: 1
@@ -35,7 +35,7 @@ resources: {}
 env:
   KEYCLOAK_URL: http://keycloak:8080
   KEYCLOAK_USER: admin
-  IMPORT_PATH: /config/
+  IMPORT_FILES_LOCATIONS: /config/
 
 secrets: {}
 #  KEYCLOAK_PASSWORD:
@@ -69,7 +69,7 @@ config: {}
 
 existingConfigSecret: ""
 
-# Add additional volumes, e. g. for custom secrets
+# Add additional volumes, e.g. for custom secrets
 extraVolumes: ""
 
 # Add additional volumes mounts, e. g. for custom secrets
