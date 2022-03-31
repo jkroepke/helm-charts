@@ -99,9 +99,3 @@ pki:
   caBundle: ""
   cert: ""
   key: ""
-
-cert-manager:
-  enabled: false
-  installCRDs: true
-  extraArgs:
-    - --enable-certificate-owner-ref=true
