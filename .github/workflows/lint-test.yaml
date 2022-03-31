@@ -1,4 +1,5 @@
 env:
+  CT_CONFIG: charts/ct.yaml
   CT_BUILD_ID: '${{ github.run_id }}'
 
 name: Chart Testing
@@ -19,7 +20,7 @@ jobs:
       - name: Run chart-testing (list-changed)
         id: list-changed
         run: |
-          changed=$(ct list-changed --targer-branch main)
+          changed=$(ct list-changed)
           if [[ -n "$changed" ]]; then
             echo "::set-output name=changed::true"
           fi
