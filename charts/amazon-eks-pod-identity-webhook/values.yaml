@@ -1,0 +1,101 @@
+replicaCount: 1
+
+image:
+  repository: amazon/amazon-eks-pod-identity-webhook
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+namespaceOverride: ""
+
+mutatingWebhook:
+  annotations: {}
+  failurePolicy: Fail
+
+config:
+  annotationPrefix: eks.amazonaws.com
+  tokenAudience: sts.amazonaws.com
+  defaultAwsRegion: us-east-1
+  extraArgs: []
+
+  ports:
+    webhook: 8443
+    metrics: 9999
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+annotations: {}
+podAnnotations: {}
+
+#  prometheus.io/port: "9999"
+#  prometheus.io/scheme: "http"
+#  prometheus.io/scrape: "true"
+
+serviceAnnotations: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+service:
+  type: ClusterIP
+
+securityContext:
+  readOnlyRootFilesystem: true
+  runAsNonRoot: false
+  runAsGroup: 1
+  runAsUser: 65534
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+livenessProbe:
+  httpGet:
+    path: /healthz
+    port: metrics
+
+readinessProbe:
+  httpGet:
+    path: /healthz
+    port: metrics
+
+pki:
+  certManager:
+    enabled: true
+    existingIssuer:
+      enabled: false
+      name: selfsigned
+      kind: ClusterIssuer
+
+    certificate:
+      duration: 2160h
+      renewBefore: 360h
+
+  existingSecret: ""
+  caBundle: ""
+  cert: ""
+  key: ""
