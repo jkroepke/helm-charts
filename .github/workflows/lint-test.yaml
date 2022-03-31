@@ -33,7 +33,6 @@ jobs:
         if: steps.list-changed.outputs.changed == 'true'
         with:
           version: v0.12.0
-          kubectl_version: v1.23.5
 
       - name: Run chart-testing (install)
-        run: ct install --config charts/ct.yaml --excluded-charts keycloak-config-cli
+        run: ct install --debug --config charts/ct.yaml --excluded-charts keycloak-config-cli
