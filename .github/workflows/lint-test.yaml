@@ -35,4 +35,4 @@ jobs:
           version: v0.12.0
 
       - name: Run chart-testing (install)
-        run: ct install --debug --config charts/ct.yaml --excluded-charts keycloak-config-cli
+        run: ct install --debug --config charts/ct.yaml --excluded-charts amazon-eks-pod-identity-webhook,keycloak-config-cli

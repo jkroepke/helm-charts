@@ -101,7 +101,7 @@ pki:
   key: ""
 
 cert-manager:
-  enabled: false
+  install: false
   installCRDs: true
   extraArgs:
     - --enable-certificate-owner-ref=true
