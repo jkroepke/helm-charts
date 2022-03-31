@@ -8,3 +8,8 @@ maintainers:
   - name: jkroepke
     email: github@jkroepke.de
     url: https://github.com/jkroepke
+dependencies:
+  - repository: https://charts.jetstack.io
+    name: cert-manager
+    version: v1.7.2
+    condition: cert-manager.enabled

@@ -1,1 +1,7 @@
+remote: origin
 target-branch: main
+check-version-increment: true
+helm-extra-args: --set cert-manager.enabled=true
+validate-maintainers: true
+validate-chart-schema: true
+validate-yaml: true
