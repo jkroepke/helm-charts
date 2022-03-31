@@ -1,5 +1,6 @@
 remote: origin
 target-branch: main
+chart-repos: jetstack=https://charts.jetstack.io
 check-version-increment: true
 helm-extra-args: --set cert-manager.enabled=true
 validate-maintainers: true
