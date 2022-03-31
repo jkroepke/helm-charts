@@ -1,0 +1,4 @@
+---
+{{- if .Values }}
+{{ .Values | toYaml }}
+{{- end }}
