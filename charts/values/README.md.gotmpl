@@ -12,7 +12,7 @@
 
 ```shell
 helm repo add jkroepke https://jkroepke.github.io/helm-charts/
-$ helm install {{ template "chart.name" $ }} jkroepke/{{ template "chart.name" $ }}
+helm install {{ template "chart.name" $ }} jkroepke/{{ template "chart.name" $ }}
 ```
 
 {{ template "chart.maintainersSection" . }}
