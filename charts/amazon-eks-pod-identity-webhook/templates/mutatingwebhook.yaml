@@ -27,6 +27,10 @@ webhooks:
         apiGroups: [""]
         apiVersions: ["v1"]
         resources: ["pods"]
+    {{- with .Values.mutatingWebhook.namespaceSelector }}
+    namespaceSelector:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
     objectSelector:
       matchExpressions:
         - key: "app.kubernetes.io/name"

@@ -1,0 +1,20 @@
+{{ template "chart.header" . }}
+
+{{ template "chart.deprecationWarning" . }}
+
+{{ template "chart.badgesSection" . }}
+
+{{ template "chart.description" . }}
+
+{{ template "chart.homepageLine" . }}
+
+## Installation
+
+```shell
+helm repo add jkroepke https://jkroepke.github.io/helm-charts/
+$ helm install {{ template "chart.name" $ }} jkroepke/{{ template "chart.name" $ }}
+```
+
+{{ template "chart.maintainersSection" . }}
+
+{{ template "chart.sourcesSection" . }}
