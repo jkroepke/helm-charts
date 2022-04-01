@@ -23,6 +23,9 @@ spec:
       {{- end }}
       labels:
         {{- include "amazon-eks-pod-identity-webhook.selectorLabels" . | nindent 8 }}
+      {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
@@ -35,18 +38,26 @@ spec:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           command:
             - /webhook
-            - --in-cluster=false
             - --annotation-prefix={{ .Values.config.annotationPrefix }}
-            - --token-audience={{ .Values.config.tokenAudience }}
-            - --sts-regional-endpoint=true
-            - --port={{ .Values.config.ports.webhook }}
-            - --metrics-port={{ .Values.config.ports.metrics }}
             - --aws-default-region={{ .Values.config.defaultAwsRegion }}
+            - --in-cluster=false
             - --logtostderr
+            - --namespace={{ include "amazon-eks-pod-identity-webhook.namespace" . }}
+            - --metrics-port={{ .Values.config.ports.metrics }}
+            - --port={{ .Values.config.ports.webhook }}
+            - --sts-regional-endpoint={{ .Values.config.stsRegionalEndpoint }}
+            - --token-audience={{ .Values.config.tokenAudience }}
+            - --token-expiration={{ .Values.config.tokenExpiration }}
+            - --token-mount-path={{ .Values.config.tokenMountPath }}
+            - --tls-cert=/etc/webhook/certs/tls.crt
+            - --tls-key=/etc/webhook/certs/tls.key
+            {{- if .Values.config.podIdentityWebhookMap.enabled }}
+            - --watch-config-map
+            {{- end }}
             {{- if .Values.config.extraArgs }}
             {{- toYaml .Values.config.extraArgs | nindent 12 }}
             {{- end }}
@@ -77,13 +88,13 @@ spec:
             {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
-        {{- toYaml . | nindent 8 }}
+        {{- toYaml . | tpl . | nindent 8 }}
       {{- end }}
       {{- with .Values.affinity }}
       affinity:
-        {{- toYaml . | nindent 8 }}
+        {{- toYaml . | tpl . | nindent 8 }}
       {{- end }}
       {{- with .Values.tolerations }}
       tolerations:
-        {{- toYaml . | nindent 8 }}
+        {{- toYaml . | tpl . | nindent 8 }}
       {{- end }}

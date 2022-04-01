@@ -1,0 +1,8 @@
+config:
+  podIdentityWebhookMap:
+    enabled: true
+    data:
+      "default/myserviceaccount":
+        RoleARN: "arn:aws-test:iam::123456789012:role/myserviceaccount.default.sa.minimal.example.com"
+        Audience: "amazonaws.com"
+        TokenExpiration: 0

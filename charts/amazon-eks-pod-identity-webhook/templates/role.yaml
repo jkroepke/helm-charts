@@ -1,0 +1,33 @@
+---
+{{- if .Values.config.podIdentityWebhookMap.enabled }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ include "amazon-eks-pod-identity-webhook.fullname" . }}
+  labels:
+    {{- include "amazon-eks-pod-identity-webhook.labels" . | nindent 4 }}
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - configmaps
+    verbs:
+      - get
+      - watch
+      - list
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ include "amazon-eks-pod-identity-webhook.fullname" . }}
+  labels:
+    {{- include "amazon-eks-pod-identity-webhook.labels" . | nindent 4 }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: {{ include "amazon-eks-pod-identity-webhook.fullname" . }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "amazon-eks-pod-identity-webhook.fullname" . }}
+    namespace: {{ include "amazon-eks-pod-identity-webhook.namespace" . }}
+{{- end }}
