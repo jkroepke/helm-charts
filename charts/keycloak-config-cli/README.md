@@ -1,6 +1,6 @@
 # keycloak-config-cli
 
-![Version: 1.2.1](https://img.shields.io/badge/Version-1.2.1-informational?style=flat-square) ![AppVersion: 5.0.0](https://img.shields.io/badge/AppVersion-5.0.0-informational?style=flat-square)
+![Version: 1.2.3](https://img.shields.io/badge/Version-1.2.3-informational?style=flat-square) ![AppVersion: 5.0.0](https://img.shields.io/badge/AppVersion-5.0.0-informational?style=flat-square)
 
 Import JSON-formatted configuration files into Keycloak - Configuration as Code for Keycloak.
 
@@ -10,14 +10,14 @@ Import JSON-formatted configuration files into Keycloak - Configuration as Code 
 
 ```shell
 helm repo add jkroepke https://jkroepke.github.io/helm-charts/
-$ helm install keycloak-config-cli jkroepke/keycloak-config-cli
+helm install keycloak-config-cli jkroepke/keycloak-config-cli
 ```
 
 ## Maintainers
 
 | Name | Email | Url |
 | ---- | ------ | --- |
-| jkroepke | github@jkroepke.de | https://github.com/jkroepke |
+| jkroepke | <github@jkroepke.de> | <https://github.com/jkroepke> |
 
 ## Source Code
 

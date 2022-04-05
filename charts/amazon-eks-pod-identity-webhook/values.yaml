@@ -130,6 +130,9 @@ livenessProbe:
 # -- Annotations for amazon-eks-pod-identity-webhook deployment
 annotations: {}
 
+# -- Specify if host network should be enabled for amazon-eks-pod-identity-webhook pod
+hostNetwork: false
+
 resources:
   # -- The resources limits for the amazon-eks-pod-identity-webhook container
   ## Example:
