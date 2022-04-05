@@ -1,6 +1,6 @@
 # amazon-eks-pod-identity-webhook
 
-![Version: 1.0.0](https://img.shields.io/badge/Version-1.0.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v0.4.0](https://img.shields.io/badge/AppVersion-v0.4.0-informational?style=flat-square)
+![Version: 1.0.2](https://img.shields.io/badge/Version-1.0.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v0.4.0](https://img.shields.io/badge/AppVersion-v0.4.0-informational?style=flat-square)
 
 A Kubernetes webhook for pods that need AWS IAM access
 
@@ -10,14 +10,14 @@ A Kubernetes webhook for pods that need AWS IAM access
 
 ```shell
 helm repo add jkroepke https://jkroepke.github.io/helm-charts/
-$ helm install amazon-eks-pod-identity-webhook jkroepke/amazon-eks-pod-identity-webhook
+helm install amazon-eks-pod-identity-webhook jkroepke/amazon-eks-pod-identity-webhook
 ```
 
 ## Maintainers
 
 | Name | Email | Url |
 | ---- | ------ | --- |
-| jkroepke | github@jkroepke.de | https://github.com/jkroepke |
+| jkroepke | <github@jkroepke.de> | <https://github.com/jkroepke> |
 
 ## Source Code
 
@@ -43,6 +43,7 @@ $ helm install amazon-eks-pod-identity-webhook jkroepke/amazon-eks-pod-identity-
 | config.tokenExpiration | int | `86400` | The token expiration |
 | config.tokenMountPath | string | `"/var/run/secrets/eks.amazonaws.com/serviceaccount"` | The path to mount tokens |
 | fullnameOverride | string | `""` | String to fully override amazon-eks-pod-identity.fullname template |
+| hostNetwork | bool | `false` | Specify if host network should be enabled for amazon-eks-pod-identity-webhook pod |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | image.registry | string | `"docker.io"` | amazon-eks-pod-identity-webhook image registry |
 | image.repository | string | `"amazon/amazon-eks-pod-identity-webhook"` | amazon-eks-pod-identity-webhook image repository |
