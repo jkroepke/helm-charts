@@ -87,15 +87,15 @@ spec:
             {{- else }}
             secretName: "{{ include "amazon-eks-pod-identity-webhook.fullname" . }}-cert"
             {{- end }}
-      {{- with .Values.nodeSelector }}
+      {{- if .Values.nodeSelector }}
       nodeSelector:
-        {{- toYaml . | tpl . | nindent 8 }}
+        {{- tpl (toYaml .Values.nodeSelector) . | nindent 8 }}
       {{- end }}
-      {{- with .Values.affinity }}
+      {{- if .Values.affinity }}
       affinity:
-        {{- toYaml . | tpl . | nindent 8 }}
+        {{- tpl (toYaml .Values.affinity ) . | nindent 8 }}
       {{- end }}
-      {{- with .Values.tolerations }}
+      {{- if .Values.tolerations }}
       tolerations:
-        {{- toYaml . | tpl . | nindent 8 }}
+        {{- tpl (toYaml .Values.tolerations) . | nindent 8 }}
       {{- end }}
