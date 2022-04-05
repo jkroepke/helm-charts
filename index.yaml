@@ -3,6 +3,35 @@ entries:
   amazon-eks-pod-identity-webhook:
   - annotations:
       artifacthub.io/changes: |
+        - "[Added]: Expose pod hostNetwork"
+    apiVersion: v2
+    appVersion: v0.4.0
+    created: "2022-04-05T20:32:56.999335119Z"
+    description: A Kubernetes webhook for pods that need AWS IAM access
+    digest: 476d1bc86be92f17520cd7245bc55e38e55c960a9499d5c8e82d8719d78ed13f
+    home: https://github.com/aws/amazon-eks-pod-identity-webhook/
+    keywords:
+    - aws
+    - iam
+    - eks
+    - irsa
+    - iam-roles-for-service-accounts
+    - eks-pod-identity-webhook
+    - aws-pod-identity-webhook
+    maintainers:
+    - email: github@jkroepke.de
+      name: jkroepke
+      url: https://github.com/jkroepke
+    name: amazon-eks-pod-identity-webhook
+    sources:
+    - https://github.com/jkroepke/helm-charts/tree/main/charts/amazon-eks-pod-identity-webhook
+    - https://github.com/aws/amazon-eks-pod-identity-webhook/
+    type: application
+    urls:
+    - https://github.com/jkroepke/helm-charts/releases/download/amazon-eks-pod-identity-webhook-1.0.2/amazon-eks-pod-identity-webhook-1.0.2.tgz
+    version: 1.0.2
+  - annotations:
+      artifacthub.io/changes: |
         - "[Changes]: Fix typo in README.md"
     apiVersion: v2
     appVersion: v0.4.0
@@ -74,6 +103,30 @@ entries:
     - https://github.com/jkroepke/helm-charts/releases/download/amazon-eks-pod-identity-webhook-0.1.0/amazon-eks-pod-identity-webhook-0.1.0.tgz
     version: 0.1.0
   keycloak-config-cli:
+  - apiVersion: v2
+    appVersion: 5.0.0
+    created: "2022-04-05T20:32:57.122838011Z"
+    description: Import JSON-formatted configuration files into Keycloak - Configuration
+      as Code for Keycloak.
+    digest: 6b5386d81c777a6be18a55c527e3ef3db18a76cbbfb7ef2a515985bf1da38f15
+    home: https://github.com/adorsys/keycloak-config-cli
+    keywords:
+    - keycloak
+    - config
+    - import
+    - json
+    - continuous-integration
+    - keycloak-config-cli
+    maintainers:
+    - email: github@jkroepke.de
+      name: jkroepke
+      url: https://github.com/jkroepke
+    name: keycloak-config-cli
+    sources:
+    - https://github.com/adorsys/keycloak-config-cli
+    urls:
+    - https://github.com/jkroepke/helm-charts/releases/download/keycloak-config-cli-1.2.3/keycloak-config-cli-1.2.3.tgz
+    version: 1.2.3
   - apiVersion: v2
     appVersion: 5.0.0
     created: "2022-04-01T15:24:22.454446754Z"
@@ -173,6 +226,26 @@ entries:
     version: 1.0.0
   values:
   - apiVersion: v2
+    created: "2022-04-05T20:32:57.230144663Z"
+    description: Pipeline the yaml from the values. Useful to deploy custom resources
+      through Terraform.
+    digest: 017b08fc2b4ef4023c58b1ec400930a8a7a20fef3e2cdc81d957ea113942d2f1
+    home: https://github.com/jkroepke/helm-charts
+    keywords:
+    - helm
+    - value
+    - values
+    maintainers:
+    - email: github@jkroepke.de
+      name: jkroepke
+      url: https://github.com/jkroepke
+    name: values
+    sources:
+    - https://github.com/jkroepke/helm-charts
+    urls:
+    - https://github.com/jkroepke/helm-charts/releases/download/values-1.0.3/values-1.0.3.tgz
+    version: 1.0.3
+  - apiVersion: v2
     created: "2022-04-01T15:24:22.662292984Z"
     description: Pipeline the yaml from the values. Useful to deploy custom resources
       through Terraform.
@@ -231,4 +304,4 @@ entries:
     urls:
     - https://github.com/jkroepke/helm-charts/releases/download/values-1.0.0/values-1.0.0.tgz
     version: 1.0.0
-generated: "2022-04-01T15:24:22.662321687Z"
+generated: "2022-04-05T20:32:57.230224467Z"
