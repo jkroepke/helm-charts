@@ -134,6 +134,28 @@ entries:
   github-exporter:
   - apiVersion: v2
     appVersion: 1.5.0
+    created: "2022-10-14T19:53:04.521446475Z"
+    description: exporter for export github metrics
+    digest: eccc8904d90377be81113bc9c913288e4920733c929f0f9c2a0046fc56376dcd
+    home: https://github.com/jkroepke/github_exporter
+    keywords:
+    - github_exporter
+    - config
+    - exporter
+    - github
+    - prometheus
+    maintainers:
+    - email: github@jkroepke.de
+      name: jkroepke
+      url: https://github.com/jkroepke
+    name: github-exporter
+    sources:
+    - https://github.com/adorsys/github_exporter
+    urls:
+    - https://github.com/jkroepke/helm-charts/releases/download/github-exporter-1.0.1/github-exporter-1.0.1.tgz
+    version: 1.0.1
+  - apiVersion: v2
+    appVersion: 1.5.0
     created: "2022-10-14T19:13:06.647248345Z"
     description: exporter for export github metrics
     digest: 35cf3e9cf2a13e44330f9be4bd5bf417e8060267c5db882a75c64a71c8bcbe9d
@@ -356,4 +378,4 @@ entries:
     urls:
     - https://github.com/jkroepke/helm-charts/releases/download/values-1.0.0/values-1.0.0.tgz
     version: 1.0.0
-generated: "2022-10-14T19:13:06.647281945Z"
+generated: "2022-10-14T19:53:04.521655879Z"
