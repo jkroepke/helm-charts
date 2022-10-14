@@ -2,14 +2,21 @@
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
+  {{- with .Values.metrics.serviceMonitor.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
   name: {{ include "github-exporter.fullname" . }}
   labels:
     {{- include "github-exporter.labels" . | nindent 4 }}
+  {{- with .Values.metrics.serviceMonitor.labels }}
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 spec:
   jobLabel: {{ .Values.metrics.serviceMonitor.jobLabel | quote }}
   selector:
     matchLabels:
-      {{- include "github-exporter.selectorLabels" . | nindent 4 }}
+      {{- include "github-exporter.selectorLabels" . | nindent 6 }}
   endpoints:
     - port: metrics
       path: /metrics

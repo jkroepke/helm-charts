@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "github-exporter.fullname" . }}
+  labels:
+    {{- include "github-exporter.labels" . | nindent 4 }}
+    grafana_dashboard: "1"
+data:
+  {{ (.Files.Glob "files/*").AsConfig | nindent 2 }}
