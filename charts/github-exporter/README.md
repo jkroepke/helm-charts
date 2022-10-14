@@ -1,0 +1,57 @@
+# github-exporter
+
+![Version: 1.0.0](https://img.shields.io/badge/Version-1.0.0-informational?style=flat-square) ![AppVersion: latest](https://img.shields.io/badge/AppVersion-latest-informational?style=flat-square)
+
+exporter for export github metrics
+
+**Homepage:** <https://github.com/jkroepke/github_exporter>
+
+## Installation
+
+```shell
+helm repo add jkroepke https://jkroepke.github.io/helm-charts/
+helm install github-exporter jkroepke/github-exporter
+```
+
+## Maintainers
+
+| Name | Email | Url |
+| ---- | ------ | --- |
+| jkroepke | <github@jkroepke.de> | <https://github.com/jkroepke> |
+
+## Source Code
+
+* <https://github.com/adorsys/github_exporter>
+
+## Values
+
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| annotations | object | `{}` | annotations of the Deployment. |
+| env | object | `{}` |  |
+| extraVolumeMounts | string | `""` | Add additional volumes mounts, e. g. for custom secrets |
+| extraVolumes | string | `""` | Add additional volumes, e.g. for custom secrets |
+| fullnameOverride | string | `""` | String to fully override amazon-eks-pod-identity.fullname template |
+| image.pullPolicy | string | `"IfNotPresent"` |  |
+| image.registry | string | `"docker.io"` | github_exporter image registry |
+| image.repository | string | `"jkroepke/github_exporter"` | github_exporter image repository |
+| image.tag | string | `.Chart.AppVersion` | github_exporter image tag (immutable tags are recommended). |
+| imagePullSecrets | list | `[]` | registry secret names as an array |
+| labels | object | `{}` | labels of the Deployment. |
+| nameOverride | string | `""` | String to partially override github_exporter.fullname template (will maintain the release name) |
+| podAnnotations | object | `{}` | Annotations for github_exporter pods |
+| podLabels | object | `{}` | Additional labels for github_exporter pods |
+| podSecurityContext | object | `{}` | github_exporter pods' Security Context. |
+| resources.limits | object | `{}` | The resources limits for the amazon-eks-pod-identity-webhook container # Example: # limits: #    cpu: 100m #    memory: 128Mi |
+| resources.requests | object | `{}` | The requested resources for the amazon-eks-pod-identity-webhook container # Examples: # requests: #    cpu: 100m #    memory: 128Mi |
+| secrets | object | `{}` |  |
+| securityContext.readOnlyRootFilesystem | bool | `true` | Pod securityContext: Enable read-only root filesystem |
+| securityContext.runAsGroup | int | `1` | Pod securityContext: Run primary group id |
+| securityContext.runAsNonRoot | bool | `false` | Pod securityContext: Disable root user |
+| securityContext.runAsUser | int | `65534` | Pod securityContext: Run user id |
+| service.annotations | object | `{}` | Service annotations |
+| service.type | string | `"ClusterIP"` | Service type |
+| serviceAccount.annotations | object | `{}` | Annotations for service account. Evaluated as a template. |
+| serviceAccount.create | bool | `true` | Enable creation of ServiceAccount for nginx pod |
+| serviceAccount.labels | object | `{}` | Labels for service account. Evaluated as a template. |
+| serviceAccount.name | string | A name is generated using the `github_exporter.fullname` template | The name of the ServiceAccount to use. |

@@ -1,0 +1,31 @@
+{{- if .Values.metrics.serviceMonitor.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "github-exporter.fullname" . }}
+  labels:
+    {{- include "github-exporter.labels" . | nindent 4 }}
+spec:
+  jobLabel: {{ .Values.metrics.serviceMonitor.jobLabel | quote }}
+  selector:
+    matchLabels:
+      {{- include "github-exporter.selectorLabels" . | nindent 4 }}
+  endpoints:
+    - port: metrics
+      path: /metrics
+      {{- if .Values.metrics.serviceMonitor.interval }}
+      interval: {{ .Values.metrics.serviceMonitor.interval }}
+      {{- end }}
+      {{- if .Values.metrics.serviceMonitor.scrapeTimeout }}
+      scrapeTimeout: {{ .Values.metrics.serviceMonitor.scrapeTimeout }}
+      {{- end }}
+      {{- if .Values.metrics.serviceMonitor.honorLabels }}
+      honorLabels: {{ .Values.metrics.serviceMonitor.honorLabels }}
+      {{- end }}
+      {{- if .Values.metrics.serviceMonitor.metricRelabelings }}
+      metricRelabelings: {{ toYaml .Values.metrics.serviceMonitor.metricRelabelings | nindent 8 }}
+      {{- end }}
+      {{- if .Values.metrics.serviceMonitor.relabelings }}
+      relabelings: {{ toYaml .Values.metrics.serviceMonitor.relabelings | nindent 8 }}
+      {{- end }}
+{{- end }}
