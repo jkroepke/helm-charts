@@ -131,6 +131,29 @@ entries:
     urls:
     - https://github.com/jkroepke/helm-charts/releases/download/amazon-eks-pod-identity-webhook-0.1.0/amazon-eks-pod-identity-webhook-0.1.0.tgz
     version: 0.1.0
+  github-exporter:
+  - apiVersion: v2
+    appVersion: 1.5.0
+    created: "2022-10-14T19:13:06.647248345Z"
+    description: exporter for export github metrics
+    digest: 35cf3e9cf2a13e44330f9be4bd5bf417e8060267c5db882a75c64a71c8bcbe9d
+    home: https://github.com/jkroepke/github_exporter
+    keywords:
+    - github_exporter
+    - config
+    - exporter
+    - github
+    - prometheus
+    maintainers:
+    - email: github@jkroepke.de
+      name: jkroepke
+      url: https://github.com/jkroepke
+    name: github-exporter
+    sources:
+    - https://github.com/adorsys/github_exporter
+    urls:
+    - https://github.com/jkroepke/helm-charts/releases/download/github-exporter-1.0.0/github-exporter-1.0.0.tgz
+    version: 1.0.0
   keycloak-config-cli:
   - apiVersion: v2
     appVersion: 5.0.0
@@ -333,4 +356,4 @@ entries:
     urls:
     - https://github.com/jkroepke/helm-charts/releases/download/values-1.0.0/values-1.0.0.tgz
     version: 1.0.0
-generated: "2022-04-05T20:58:39.88076052Z"
+generated: "2022-10-14T19:13:06.647281945Z"
