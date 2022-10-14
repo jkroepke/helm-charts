@@ -1,0 +1,133 @@
+# -- String to partially override github_exporter.fullname template (will maintain the release name)
+nameOverride: ''
+
+# -- String to fully override amazon-eks-pod-identity.fullname template
+fullnameOverride: ''
+
+image:
+  pullPolicy: IfNotPresent
+  # -- github_exporter image registry
+  registry: docker.io
+  # -- github_exporter image repository
+  repository: jkroepke/github_exporter
+  # -- github_exporter image tag (immutable tags are recommended).
+  # @default -- `.Chart.AppVersion`
+  tag: ''
+
+# -- registry secret names as an array
+imagePullSecrets: []
+
+service:
+  # -- Service type
+  type: ClusterIP
+  # -- Service annotations
+  annotations: {}
+
+# -- annotations of the Deployment.
+annotations: {}
+
+# -- labels of the Deployment.
+labels: {}
+
+resources:
+  # -- The resources limits for the amazon-eks-pod-identity-webhook container
+  ## Example:
+  ## limits:
+  ##    cpu: 100m
+  ##    memory: 128Mi
+  limits: {}
+  # -- The requested resources for the amazon-eks-pod-identity-webhook container
+  ## Examples:
+  ## requests:
+  ##    cpu: 100m
+  ##    memory: 128Mi
+  requests: {}
+
+env: {}
+
+secrets: {}
+
+#  KEYCLOAK_PASSWORD:
+serviceAccount:
+  # -- Enable creation of ServiceAccount for nginx pod
+  create: true
+  # -- The name of the ServiceAccount to use.
+  # @default -- A name is generated using the `github_exporter.fullname` template
+  name: ''
+  # -- Annotations for service account. Evaluated as a template.
+  annotations: {}
+  # -- Labels for service account. Evaluated as a template.
+  labels: {}
+
+securityContext:
+  # -- Pod securityContext: Enable read-only root filesystem
+  readOnlyRootFilesystem: true
+  # -- Pod securityContext: Run primary group id
+  runAsGroup: 1
+  # -- Pod securityContext: Disable root user
+  runAsNonRoot: false
+  # -- Pod securityContext: Run user id
+  runAsUser: 65534
+
+# -- github_exporter pods' Security Context.
+podSecurityContext: {}
+
+# -- Additional labels for github_exporter pods
+podLabels: {}
+
+# -- Annotations for github_exporter pods
+podAnnotations: {}
+#  prometheus.io/port: "9999"
+#  prometheus.io/scheme: "http"
+#  prometheus.io/scrape: "true"
+
+# -- Add additional volumes, e.g. for custom secrets
+extraVolumes: ""
+
+# -- Add additional volumes mounts, e. g. for custom secrets
+extraVolumeMounts: ""
+
+metrics:
+  serviceMonitor:
+    # -- Specify if a ServiceMonitor will be deployed for Prometheus Operator
+    ##
+    enabled: false
+    # -- Namespace in which Prometheus is running
+    ##
+    namespace: ""
+    # -- Extra labels for the ServiceMonitor
+    ##
+    labels: {}
+    # -- Additional ServiceMonitor annotations (evaluated as a template)
+    ##
+    annotations: {}
+    # -- The name of the label on the target service to use as the job name in Prometheus
+    ##
+    jobLabel: ""
+    # -- honorLabels chooses the metric's labels on collisions with target labels
+    ##
+    honorLabels: false
+    # -- Interval at which metrics should be scraped.
+    ## ref: https://github.com/coreos/prometheus-operator/blob/master/Documentation/api.md#endpoint
+    ## e.g:
+    ## interval: 10s
+    ##
+    interval: ""
+    # -- Timeout after which the scrape is ended
+    ## ref: https://github.com/coreos/prometheus-operator/blob/master/Documentation/api.md#endpoint
+    ## e.g:
+    ## scrapeTimeout: 10s
+    ##
+    scrapeTimeout: ""
+    # -- Specify additional relabeling of metrics
+    ##
+    metricRelabelings: []
+    # -- Specify general relabeling
+    ##
+    relabelings: []
+    # -- Prometheus instance selector labels
+    ## ref: https://github.com/bitnami/charts/tree/master/bitnami/prometheus-operator#prometheus-configuration
+    ## selector:
+    ##   prometheus: my-prometheus
+    ##
+    selector: {}
