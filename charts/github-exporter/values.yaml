@@ -97,7 +97,8 @@ metrics:
     namespace: ""
     # -- Extra labels for the ServiceMonitor
     ##
-    labels: {}
+    labels:
+      release: kube-prometheus-stack
     # -- Additional ServiceMonitor annotations (evaluated as a template)
     ##
     annotations: {}
