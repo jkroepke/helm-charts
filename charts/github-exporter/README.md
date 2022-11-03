@@ -1,6 +1,6 @@
 # github-exporter
 
-![Version: 1.0.0](https://img.shields.io/badge/Version-1.0.0-informational?style=flat-square) ![AppVersion: latest](https://img.shields.io/badge/AppVersion-latest-informational?style=flat-square)
+![Version: 1.0.2](https://img.shields.io/badge/Version-1.0.2-informational?style=flat-square) ![AppVersion: 1.6.5](https://img.shields.io/badge/AppVersion-1.6.5-informational?style=flat-square)
 
 exporter for export github metrics
 
@@ -38,6 +38,17 @@ helm install github-exporter jkroepke/github-exporter
 | image.tag | string | `.Chart.AppVersion` | github_exporter image tag (immutable tags are recommended). |
 | imagePullSecrets | list | `[]` | registry secret names as an array |
 | labels | object | `{}` | labels of the Deployment. |
+| metrics.serviceMonitor.annotations | object | `{}` | Additional ServiceMonitor annotations (evaluated as a template) # |
+| metrics.serviceMonitor.enabled | bool | `false` | Specify if a ServiceMonitor will be deployed for Prometheus Operator # |
+| metrics.serviceMonitor.honorLabels | bool | `false` | honorLabels chooses the metric's labels on collisions with target labels # |
+| metrics.serviceMonitor.interval | string | `""` | Interval at which metrics should be scraped. # ref: https://github.com/coreos/prometheus-operator/blob/master/Documentation/api.md#endpoint # e.g: # interval: 10s # |
+| metrics.serviceMonitor.jobLabel | string | `""` | The name of the label on the target service to use as the job name in Prometheus # |
+| metrics.serviceMonitor.labels | object | `{"release":"kube-prometheus-stack"}` | Extra labels for the ServiceMonitor # |
+| metrics.serviceMonitor.metricRelabelings | list | `[]` | Specify additional relabeling of metrics # |
+| metrics.serviceMonitor.namespace | string | `""` | Namespace in which Prometheus is running # |
+| metrics.serviceMonitor.relabelings | list | `[]` | Specify general relabeling # |
+| metrics.serviceMonitor.scrapeTimeout | string | `""` | Timeout after which the scrape is ended # ref: https://github.com/coreos/prometheus-operator/blob/master/Documentation/api.md#endpoint # e.g: # scrapeTimeout: 10s # |
+| metrics.serviceMonitor.selector | object | `{}` | Prometheus instance selector labels # ref: https://github.com/bitnami/charts/tree/master/bitnami/prometheus-operator#prometheus-configuration # selector: #   prometheus: my-prometheus # |
 | nameOverride | string | `""` | String to partially override github_exporter.fullname template (will maintain the release name) |
 | podAnnotations | object | `{}` | Annotations for github_exporter pods |
 | podLabels | object | `{}` | Additional labels for github_exporter pods |

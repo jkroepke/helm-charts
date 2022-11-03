@@ -2,8 +2,8 @@ apiVersion: v2
 name: github-exporter
 description: exporter for export github metrics
 home: https://github.com/jkroepke/github_exporter
-version: 1.0.1
-appVersion: 1.5.0
+version: 1.0.2
+appVersion: 1.6.5
 maintainers:
   - name: jkroepke
     email: github@jkroepke.de
