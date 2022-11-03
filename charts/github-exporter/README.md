@@ -1,6 +1,6 @@
 # github-exporter
 
-![Version: 1.0.2](https://img.shields.io/badge/Version-1.0.2-informational?style=flat-square) ![AppVersion: 1.6.5](https://img.shields.io/badge/AppVersion-1.6.5-informational?style=flat-square)
+![Version: 1.0.3](https://img.shields.io/badge/Version-1.0.3-informational?style=flat-square) ![AppVersion: 1.6.6](https://img.shields.io/badge/AppVersion-1.6.6-informational?style=flat-square)
 
 exporter for export github metrics
 
