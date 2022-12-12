@@ -4,7 +4,7 @@ description: exporter for export github metrics
 home: https://github.com/jkroepke/github_exporter
 version: 1.0.3
 # renovate: image=jkroepke/github_exporter
-appVersion: 1.6.6
+appVersion: 1.6.5
 maintainers:
   - name: jkroepke
     email: github@jkroepke.de
