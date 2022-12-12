@@ -3,7 +3,7 @@ name: github-exporter
 description: exporter for export github metrics
 home: https://github.com/jkroepke/github_exporter
 version: 1.0.3
-# renovate: image=amazon/amazon-eks-pod-identity-webhook
+# renovate: image=jkroepke/github_exporter
 appVersion: 1.6.6
 maintainers:
   - name: jkroepke
