@@ -11,6 +11,9 @@ fullnameOverride: ""
 # -- Number of amazon-eks-pod-identity-webhook replicas to deploy
 replicaCount: 1
 
+# -- PriorityClass applied to deployment
+priorityClassName: ""
+
 image:
   pullPolicy: IfNotPresent
   # -- amazon-eks-pod-identity-webhook image registry
