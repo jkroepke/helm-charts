@@ -11,6 +11,12 @@ fullnameOverride: ""
 # -- Number of amazon-eks-pod-identity-webhook replicas to deploy
 replicaCount: 1
 
+# -- https://kubernetes.io/docs/tasks/run-application/configure-pdb/
+podDisruptionBudget:
+  enabled: false
+  minAvailable:
+  maxUnavailable:
+
 # -- PriorityClass applied to deployment
 priorityClassName: ""
 
