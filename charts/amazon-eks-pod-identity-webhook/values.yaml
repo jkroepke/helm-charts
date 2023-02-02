@@ -102,10 +102,10 @@ pki:
   existingSecret: ""
 
 metrics:
-  podMonitor:
-    # -- Create PodMonitor Resource for scraping metrics using PrometheusOperator
+  serviceMonitor:
+    # -- Create serviceMonitor Resource for scraping metrics using PrometheusOperator
     enabled: false
-    # -- Specify the namespace in which the podMonitor resource will be created
+    # -- Specify the namespace in which the serviceMonitor resource will be created
     namespace: ""
     # -- Used to pass Labels that are required by the installed Prometheus Operator
     additionalLabels: {}
