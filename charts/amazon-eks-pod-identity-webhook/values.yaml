@@ -1,15 +1,24 @@
 ---
 # -- String to partially override amazon-eks-pod-identity-webhook.fullname template (will maintain the release name)
-nameOverride: ''
+nameOverride: ""
 
 # -- String to partially override amazon-eks-pod-identity-webhook.fullname template (will maintain the release name)
-namespaceOverride: ''
+namespaceOverride: ""
 
 # -- String to fully override amazon-eks-pod-identity.fullname template
-fullnameOverride: ''
+fullnameOverride: ""
 
 # -- Number of amazon-eks-pod-identity-webhook replicas to deploy
 replicaCount: 1
+
+# -- https://kubernetes.io/docs/tasks/run-application/configure-pdb/
+podDisruptionBudget:
+  enabled: false
+  minAvailable:
+  maxUnavailable:
+
+# -- PriorityClass applied to deployment
+priorityClassName: ""
 
 image:
   pullPolicy: IfNotPresent
@@ -19,7 +28,7 @@ image:
   repository: amazon/amazon-eks-pod-identity-webhook
   # -- amazon-eks-pod-identity-webhook image tag (immutable tags are recommended).
   # @default -- `.Chart.AppVersion`
-  tag: ''
+  tag: ""
 
 # -- registry secret names as an array
 imagePullSecrets: []
@@ -90,19 +99,19 @@ pki:
       # -- Name of the existing cert-manager issuer.
       name: selfsigned
   # -- ca bundle of the manual generated server tls key
-  caBundle: ''
+  caBundle: ""
   # -- manual generated server tls cert. Used if pki.certManager.enabled is false
-  cert: ''
+  cert: ""
   # -- manual generated server tls key. Used if pki.certManager.enabled is false
-  key: ''
+  key: ""
   # -- name of the external secret (type kubernetes.io/tls). Used if pki.certManager.enabled is false
-  existingSecret: ''
+  existingSecret: ""
 
 metrics:
-  podMonitor:
-    # -- Create PodMonitor Resource for scraping metrics using PrometheusOperator
+  serviceMonitor:
+    # -- Create serviceMonitor Resource for scraping metrics using PrometheusOperator
     enabled: false
-    # -- Specify the namespace in which the podMonitor resource will be created
+    # -- Specify the namespace in which the serviceMonitor resource will be created
     namespace: ""
     # -- Used to pass Labels that are required by the installed Prometheus Operator
     additionalLabels: {}
@@ -168,7 +177,7 @@ serviceAccount:
   create: true
   # -- The name of the ServiceAccount to use.
   # @default -- A name is generated using the `amazon-eks-pod-identity-webhook.fullname` template
-  name: ''
+  name: ""
   # -- Annotations for service account. Evaluated as a template.
   annotations: {}
 
