@@ -160,6 +160,17 @@ entries:
     urls:
     - https://github.com/jkroepke/helm-charts/releases/download/amazon-eks-pod-identity-webhook-0.1.0/amazon-eks-pod-identity-webhook-0.1.0.tgz
     version: 0.1.0
+  example:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2023-03-02T21:24:02.860976123Z"
+    description: A Helm chart for Kubernetes
+    digest: acc3fe1ae49bddc9258abdf0ed66cdfc0e0fff12e2b0d96f6d63419c5892c3f6
+    name: example
+    type: application
+    urls:
+    - https://github.com/jkroepke/helm-charts/releases/download/example-0.1.0/example-0.1.0.tgz
+    version: 0.1.0
   github-exporter:
   - apiVersion: v2
     appVersion: 1.6.6
@@ -451,4 +462,4 @@ entries:
     urls:
     - https://github.com/jkroepke/helm-charts/releases/download/values-1.0.0/values-1.0.0.tgz
     version: 1.0.0
-generated: "2023-02-03T15:57:33.461718932Z"
+generated: "2023-03-02T21:24:02.861002724Z"
