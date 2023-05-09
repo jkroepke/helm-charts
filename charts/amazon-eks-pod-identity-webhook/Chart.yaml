@@ -23,4 +23,4 @@ keywords:
   - aws-pod-identity-webhook
 annotations:
   artifacthub.io/changes: |
-    - "[Changed]: Bump app version to v0.4.0"
+    - "[Changed]: Change the CN of the certificate to {{ include "amazon-eks-pod-identity-webhook.fullname" . }}"
