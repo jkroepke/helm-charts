@@ -1,6 +1,6 @@
 # values
 
-![Version: 1.0.3](https://img.shields.io/badge/Version-1.0.3-informational?style=flat-square)
+![Version: 1.0.4](https://img.shields.io/badge/Version-1.0.4-informational?style=flat-square)
 
 Pipeline the yaml from the values. Useful to deploy custom resources through Terraform.
 
@@ -9,8 +9,7 @@ Pipeline the yaml from the values. Useful to deploy custom resources through Ter
 ## Installation
 
 ```shell
-helm repo add jkroepke https://jkroepke.github.io/helm-charts/
-helm install values jkroepke/values
+helm install values oci://ghcr.io/jkroepke/charts/values
 ```
 
 ## Maintainers
