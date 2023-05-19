@@ -6,7 +6,7 @@ metadata:
   namespace: {{ include "amazon-eks-pod-identity-webhook.namespace" . }}
 spec:
   secretName: "{{ include "amazon-eks-pod-identity-webhook.fullname" . }}-cert"
-  commonName: "{{ include "amazon-eks-pod-identity-webhook.fullname" . }}.{{ include "amazon-eks-pod-identity-webhook.namespace" . }}.svc"
+  commonName: "{{ include "amazon-eks-pod-identity-webhook.fullname" . }}"
   dnsNames:
     - "{{ include "amazon-eks-pod-identity-webhook.fullname" . }}"
     - "{{ include "amazon-eks-pod-identity-webhook.fullname" . }}.{{ include "amazon-eks-pod-identity-webhook.namespace" . }}"
