@@ -37,6 +37,15 @@ env:
   KEYCLOAK_USER: admin
   IMPORT_FILES_LOCATIONS: /config/
 
+# Add additional init containers, e.g: wait for keycloak to be ready
+initContainers: []
+  # - name: keycloak-health
+  #   image: curlimages/curl
+  #   command:
+  #     - sh
+  #     - -c
+  #     - until curl -fsS {{ .Values.env.KEYCLOAK_URL }}/health/ready; do sleep 5; done
+
 secrets: {}
 #  KEYCLOAK_PASSWORD:
 
