@@ -3,6 +3,7 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: {{ .Release.Name }}
+  namespace: {{ include "amazon-eks-pod-identity-webhook.namespace" . }}
   labels:
     {{- include "amazon-eks-pod-identity-webhook.labels" . | nindent 4 }}
   {{- with .Values.metrics.serviceMonitor.additionalLabels }}
