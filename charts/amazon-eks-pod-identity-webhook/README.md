@@ -1,6 +1,6 @@
 # amazon-eks-pod-identity-webhook
 
-![Version: 1.0.3](https://img.shields.io/badge/Version-1.0.3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v0.4.0](https://img.shields.io/badge/AppVersion-v0.4.0-informational?style=flat-square)
+![Version: 2.1.0](https://img.shields.io/badge/Version-2.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v0.5.1](https://img.shields.io/badge/AppVersion-v0.5.1-informational?style=flat-square)
 
 A Kubernetes webhook for pods that need AWS IAM access
 
@@ -35,7 +35,7 @@ helm install amazon-eks-pod-identity-webhook jkroepke/amazon-eks-pod-identity-we
 | config.extraArgs | list | `[]` | Additional command line arguments to pass to amazon-eks-pod-identity-webhook |
 | config.podIdentityWebhookMap.data | object | `{}` | Content of pod-identity-webhook configmap |
 | config.podIdentityWebhookMap.enabled | bool | `false` | Enabled pod-identity-webhook ConfigMap. See https://github.com/aws/amazon-eks-pod-identity-webhook#pod-identity-webhook-configmap |
-| config.podIdentityWebhookMap.name | string | `"pod-identity-webhook"` | Name pod-identity-webhook ConfigMap. Changing this value is not supported. |
+| config.podIdentityWebhookMap.name | string | `"pod-identity-webhook"` | Name pod-identity-webhook ConfigMap. Changing this value is not supported. # Names are hard-coded # ref: https://github.com/aws/amazon-eks-pod-identity-webhook/blob/0d254eee1537e0745679252ca60f020fa1a461f0/pkg/cache/cache.go#L259-L262 |
 | config.ports.metrics | int | `9999` | Port to listen on for metrics and healthz (http) |
 | config.ports.webhook | int | `8443` | Port to listen on |
 | config.stsRegionalEndpoint | bool | `true` | Whether to inject the AWS_STS_REGIONAL_ENDPOINTS=regional env var in mutated pods. |
@@ -51,15 +51,15 @@ helm install amazon-eks-pod-identity-webhook jkroepke/amazon-eks-pod-identity-we
 | imagePullSecrets | list | `[]` | registry secret names as an array |
 | livenessProbe.httpGet.path | string | `"/healthz"` | This is the liveness check endpoint |
 | livenessProbe.httpGet.port | string | `"metrics"` |  |
-| metrics.podMonitor.additionalLabels | object | `{}` | Used to pass Labels that are required by the installed Prometheus Operator |
-| metrics.podMonitor.enabled | bool | `false` | Create PodMonitor Resource for scraping metrics using PrometheusOperator |
-| metrics.podMonitor.honorLabels | bool | `false` | honorLabels chooses the metric's labels on collisions with target labels |
-| metrics.podMonitor.interval | string | `"30s"` | Specify the interval at which metrics should be scraped |
-| metrics.podMonitor.namespace | string | `""` | Specify the namespace in which the podMonitor resource will be created |
-| metrics.podMonitor.relabelings | list | `[]` | RelabelConfigs to apply to samples before scraping. |
-| metrics.podMonitor.scrapeTimeout | string | `""` | Specify the timeout after which the scrape is ended |
+| metrics.serviceMonitor.additionalLabels | object | `{}` | Used to pass Labels that are required by the installed Prometheus Operator |
+| metrics.serviceMonitor.enabled | bool | `false` | Create serviceMonitor Resource for scraping metrics using PrometheusOperator |
+| metrics.serviceMonitor.honorLabels | bool | `false` | honorLabels chooses the metric's labels on collisions with target labels |
+| metrics.serviceMonitor.interval | string | `"30s"` | Specify the interval at which metrics should be scraped |
+| metrics.serviceMonitor.namespace | string | `""` | Specify the namespace in which the serviceMonitor resource will be created |
+| metrics.serviceMonitor.relabelings | list | `[]` | RelabelConfigs to apply to samples before scraping. |
+| metrics.serviceMonitor.scrapeTimeout | string | `""` | Specify the timeout after which the scrape is ended |
 | mutatingWebhook.annotations | object | `{}` | Annotations for amazon-eks-pod-identity-webhook mutating webhook |
-| mutatingWebhook.failurePolicy | string | `"Ignore"` | FailurePolicy of the amazon-eks-pod-identity-webhook mutating webhook. Fail or Ignore are allowed. |
+| mutatingWebhook.failurePolicy | string | `"Ignore"` | FailurePolicy of the amazon-eks-pod-identity-webhook mutating webhook. Fail or Ignore are allowed. # ref: https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/#failure-policy |
 | mutatingWebhook.namespaceSelector | object | `{}` | namespaceSelector for the mutating webhook to include or exclude namespace. |
 | nameOverride | string | `""` | String to partially override amazon-eks-pod-identity-webhook.fullname template (will maintain the release name) |
 | namespaceOverride | string | `""` | String to partially override amazon-eks-pod-identity-webhook.fullname template (will maintain the release name) |
@@ -75,13 +75,15 @@ helm install amazon-eks-pod-identity-webhook jkroepke/amazon-eks-pod-identity-we
 | pki.existingSecret | string | `""` | name of the external secret (type kubernetes.io/tls). Used if pki.certManager.enabled is false |
 | pki.key | string | `""` | manual generated server tls key. Used if pki.certManager.enabled is false |
 | podAnnotations | object | `{}` | Annotations for amazon-eks-pod-identity-webhook pods |
+| podDisruptionBudget | object | `{"enabled":false,"maxUnavailable":null,"minAvailable":null}` | https://kubernetes.io/docs/tasks/run-application/configure-pdb/ |
 | podLabels | object | `{}` | Additional labels for amazon-eks-pod-identity-webhook pods |
 | podSecurityContext | object | `{}` | amazon-eks-pod-identity-webhook pods' Security Context. |
+| priorityClassName | string | `""` | PriorityClass applied to deployment |
 | readinessProbe.httpGet.path | string | `"/healthz"` | This is the readiness check endpoint |
 | readinessProbe.httpGet.port | string | `"metrics"` |  |
 | replicaCount | int | `1` | Number of amazon-eks-pod-identity-webhook replicas to deploy |
-| resources.limits | object | `{}` | The resources limits for the amazon-eks-pod-identity-webhook container |
-| resources.requests | object | `{}` | The requested resources for the amazon-eks-pod-identity-webhook container |
+| resources.limits | object | `{}` | The resources limits for the amazon-eks-pod-identity-webhook container # Example: # limits: #    cpu: 100m #    memory: 128Mi |
+| resources.requests | object | `{}` | The requested resources for the amazon-eks-pod-identity-webhook container # Examples: # requests: #    cpu: 100m #    memory: 128Mi |
 | securityContext.readOnlyRootFilesystem | bool | `true` | Pod securityContext: Enable read-only root filesystem |
 | securityContext.runAsGroup | int | `1` | Pod securityContext: Run primary group id |
 | securityContext.runAsNonRoot | bool | `false` | Pod securityContext: Disable root user |
