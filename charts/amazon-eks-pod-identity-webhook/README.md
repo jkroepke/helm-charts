@@ -61,8 +61,6 @@ helm install amazon-eks-pod-identity-webhook jkroepke/amazon-eks-pod-identity-we
 | mutatingWebhook.annotations | object | `{}` | Annotations for amazon-eks-pod-identity-webhook mutating webhook |
 | mutatingWebhook.failurePolicy | string | `"Ignore"` | FailurePolicy of the amazon-eks-pod-identity-webhook mutating webhook. Fail or Ignore are allowed. # ref: https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/#failure-policy |
 | mutatingWebhook.namespaceSelector | object | `{}` | namespaceSelector for the mutating webhook to include or exclude namespace. |
-| mutatingWebhook.objectSelector.matchExpressions | object | `{}` |  allows selecting objects (pods) based on flexible matching rules for specific labels and fields. |
-| mutatingWebhook.objectSelector.matchLabels | list | `[]` | In the MutatingWebhook, matchLabels selects objects (pods) based on specific labels matching exactly. |
 | nameOverride | string | `""` | String to partially override amazon-eks-pod-identity-webhook.fullname template (will maintain the release name) |
 | namespaceOverride | string | `""` | String to partially override amazon-eks-pod-identity-webhook.fullname template (will maintain the release name) |
 | nodeSelector | object | `{}` | Node labels for pod assignment. Evaluated as a template. |

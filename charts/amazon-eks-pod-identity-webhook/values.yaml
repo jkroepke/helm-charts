@@ -81,12 +81,15 @@ mutatingWebhook:
   #    - key: "kubernetes.io/metadata.name"
   #      operator: NotIn
   #      values: ["kube-system"]
+
   objectSelector:
+    # -- Allows selecting objects (pods) based on flexible matching rules for specific labels and fields.
     matchExpressions: {}
       # - key: foo
       #   operator: In
       #   values:
       #     - bar
+    # -- In the MutatingWebhook, matchLabels selects objects (pods) based on specific labels matching exactly.
     matchLabels: []
       # foo: bar
 pki:
