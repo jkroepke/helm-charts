@@ -81,7 +81,14 @@ mutatingWebhook:
   #    - key: "kubernetes.io/metadata.name"
   #      operator: NotIn
   #      values: ["kube-system"]
-
+  objectSelector:
+    matchExpressions: {}
+      # - key: foo
+      #   operator: In
+      #   values:
+      #     - bar
+    matchLabels: []
+      # foo: bar
 pki:
   certManager:
     # -- use cert-manager to generate the webhook server certificates
