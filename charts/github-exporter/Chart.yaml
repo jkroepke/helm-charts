@@ -2,7 +2,7 @@ apiVersion: v2
 name: github-exporter
 description: exporter for export github metrics
 home: https://github.com/jkroepke/github_exporter
-version: 1.0.4
+version: 1.1.0
 # renovate: image=jkroepke/github_exporter
 appVersion: 1.7.0
 maintainers:
