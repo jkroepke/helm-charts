@@ -1,0 +1,36 @@
+{{- if .Values.cronjob.enabled -}}
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ include "github-actions-runner.fullname" . }}-restart
+  labels:
+    {{- include "github-actions-runner.labels" . | nindent 4 }}
+spec:
+  schedule: {{ .Values.cronjob.schedule | quote }}
+  concurrencyPolicy: Forbid
+  failedJobsHistoryLimit: 1
+  successfulJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: kubectl
+              image: "{{ .Values.cronjob.image.repository }}/{{ .Values.cronjob.image.imageName }}:{{ .Values.cronjob.image.tag }}"
+              imagePullPolicy: {{ .Values.cronjob.image.pullPolicy }}
+              command:
+                - kubectl
+                - rollout
+                - restart
+                - deployment/{{ include "github-actions-runner.fullname" . }}
+              securityContext:
+                {{- toYaml .Values.securityContext | nindent 16 }}
+          serviceAccountName: {{ include "github-actions-runner.serviceAccountName" . }}
+          automountServiceAccountToken: true
+          securityContext:
+            {{- toYaml .Values.podSecurityContext | nindent 12 }}
+          restartPolicy: Never
+          activeDeadlineSeconds: 60
+      backoffLimit: 1
+{{- end }}

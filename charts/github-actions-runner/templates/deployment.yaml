@@ -1,0 +1,103 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "github-actions-runner.fullname" . }}
+  labels:
+    {{- include "github-actions-runner.labels" . | nindent 4 }}
+spec:
+  strategy:
+    type: Recreate
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "github-actions-runner.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      annotations:
+      {{- with .Values.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+        checksum/config: {{  toYaml .Values.secrets | sha256sum }} # to redeploy the deployment when secrets are changed in values.
+      labels:
+        {{- include "github-actions-runner.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "github-actions-runner.serviceAccountName" . }}
+      automountServiceAccountToken: {{ .Values.automountServiceAccountToken }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: "github-runner"
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}/{{ .Values.image.imageName}}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+            - /scripts/entrypoint.sh
+          args:
+            - /entrypoint.sh
+            - "./bin/Runner.Listener"
+            - "run"
+            - "--startuptype"
+            - "service"
+          env:
+          {{- range $key, $val := .Values.env }}
+            {{- if ne (eq $val "") }}
+            - name: {{ $key }}
+              value: {{ $val | quote  }}
+            {{- end }}
+          {{- end }}
+          {{- range $name, $value := .Values.secrets }}
+            - name: {{ $name | quote }}
+              valueFrom:
+                secretKeyRef:
+                  name: "{{ include "github-actions-runner.fullname" $ }}"
+                  key: {{ $name | quote }}
+            {{- end }}
+          {{- with .Values.livenessProbe }}
+          livenessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.readinessProbe }}
+          readinessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: work
+              mountPath: {{ .Values.env.RUNNER_WORKDIR }}
+            - name: scripts
+              mountPath: /scripts
+            - name: data
+              mountPath: {{ .Values.env.CONFIGURED_ACTIONS_RUNNER_FILES_DIR }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
+      volumes:
+        - name: work
+          emptyDir: {}
+        - name: scripts
+          configMap:
+            name: {{ include "github-actions-runner.fullname" . }}-scripts
+            defaultMode: 0755
+        - name: data
+      {{- if .Values.persistentVolume.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ include "github-actions-runner.fullname" . }}{{- with .Values.secrets.RUNNER_TOKEN }}-{{ . | sha1sum }}{{- end }}
+      {{- else }}
+          emptyDir: {}
+      {{- end }}
