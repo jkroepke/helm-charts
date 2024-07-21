@@ -1,5 +1,5 @@
 apiVersion: v2
-name: github-runner-agent
+name: github-actions-runner
 description: A Helm chart to deploy github runner for Kubernetes.
 type: application
 version: 1.1.2
