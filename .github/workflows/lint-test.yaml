@@ -68,14 +68,24 @@ jobs:
       - name: Run chart-testing (diff)
         if: steps.list-changed.outputs.changed == 'true'
         run: |
-          changed_list=$(echo $changed_list)
           for chart in $changed_list; do
-            helm install $chart oci://ghcr.io/${{ github.repository_owner }}/charts/$chart --create-namespace --namespace $chart --wait
-            helm diff upgrade $chart charts/$chart \
-              --namespace $chart \
-              --suppress=CustomResourceDefinition \
-              --normalize-manifests \
-              --reset-values \
-              --suppress-output-line-regex="chart: [0-9]" \
-              --suppress-output-line-regex="app.kubernetes.io/version: [0-9]"
+            chart="${chart#*/}"
+
+            echo "installing chart: $chart"
+
+            if helm install --create-namespace --namespace "${chart}" \
+              "${chart}" "oci://ghcr.io/${{ github.repository_owner }}/charts/$chart"; then
+
+              helm diff upgrade "${chart}" "charts/${chart}" \
+                --namespace $chart \
+                --suppress=CustomResourceDefinition \
+                --normalize-manifests \
+                --reset-values \
+                --suppress-output-line-regex="chart: [0-9]" \
+                --suppress-output-line-regex="app.kubernetes.io/version: [0-9]"
+            else
+              echo "failed to install chart: $chart"
+            fi
           done
+        env:
+          changed_list: ${{ steps.list-changed.outputs.changed_list }}

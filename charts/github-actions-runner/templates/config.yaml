@@ -6,4 +6,4 @@ metadata:
   labels:
     {{- include "github-actions-runner.labels" . | nindent 4 }}
 data:
-  {{ .Files.AsConfig "files/*.sh" | nindent 2 }}
+  {{ (.Files.Glob "files/*.sh").AsConfig | nindent 2 }}
