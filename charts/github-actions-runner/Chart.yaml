@@ -2,11 +2,11 @@ apiVersion: v2
 name: github-runner-agent
 description: A Helm chart to deploy github runner for Kubernetes.
 type: application
-version: 1.1.1
+version: 1.1.2
 home: https://github.com/jkroepke/helm-charts
 sources:
   - https://github.com/myoung34/docker-github
   - https://github.com/jkroepke/helm-charts
 maintainers:
-  - name: Jan-Otto Kröpke
+  - name: jkroepke
     url: https://github.com/jkroepke

@@ -37,7 +37,6 @@ jobs:
   diff:
     name: check diff
     runs-on: ubuntu-latest
-    needs: build
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
