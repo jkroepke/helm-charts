@@ -70,4 +70,3 @@ A Helm chart to deploy github runner for Kubernetes.
 | serviceAccount.roleName | string | `"cluster-admin"` | If not set and create is true, will use the cluster-admin role. |
 | terminationGracePeriodSeconds | int | `600` |  |
 | tolerations | list | `[]` |  |
-
