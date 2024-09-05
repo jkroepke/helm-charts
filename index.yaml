@@ -398,6 +398,23 @@ entries:
     urls:
     - https://github.com/jkroepke/helm-charts/releases/download/github-exporter-1.0.0/github-exporter-1.0.0.tgz
     version: 1.0.0
+  github-runner-agent:
+  - apiVersion: v2
+    created: "2024-09-05T16:43:27.420504689Z"
+    description: A Helm chart to deploy github runner for Kubernetes.
+    digest: 71ac54e5be924618413106d81c26817091b92b7233bfc32bbe1a5efbcaf633d2
+    home: https://github.com/jkroepke/helm-charts
+    maintainers:
+    - name: Jan-Otto Kröpke
+      url: https://github.com/jkroepke
+    name: github-runner-agent
+    sources:
+    - https://github.com/myoung34/docker-github
+    - https://github.com/jkroepke/helm-charts
+    type: application
+    urls:
+    - https://github.com/jkroepke/helm-charts/releases/download/github-runner-agent-1.1.1/github-runner-agent-1.1.1.tgz
+    version: 1.1.1
   keycloak-config-cli:
   - apiVersion: v2
     appVersion: 5.0.0
@@ -640,4 +657,4 @@ entries:
     urls:
     - https://github.com/jkroepke/helm-charts/releases/download/values-1.0.0/values-1.0.0.tgz
     version: 1.0.0
-generated: "2023-11-02T08:51:51.898271637Z"
+generated: "2024-09-05T16:43:27.42055327Z"
