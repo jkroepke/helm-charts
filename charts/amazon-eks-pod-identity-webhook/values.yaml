@@ -138,13 +138,13 @@ readinessProbe:
   httpGet:
     # -- This is the readiness check endpoint
     path: /healthz
-    port: metrics
+    port: https
 
 livenessProbe:
   httpGet:
     # -- This is the liveness check endpoint
     path: /healthz
-    port: metrics
+    port: https
 
 # -- Annotations for amazon-eks-pod-identity-webhook deployment
 annotations: {}
