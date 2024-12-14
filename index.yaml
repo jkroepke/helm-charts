@@ -5,6 +5,35 @@ entries:
       artifacthub.io/changes: |
         - "[Changed]: Change the CN of the certificate to {{ include "amazon-eks-pod-identity-webhook.fullname" . }}"
     apiVersion: v2
+    appVersion: v0.6.1
+    created: "2024-12-14T08:02:02.056508142Z"
+    description: A Kubernetes webhook for pods that need AWS IAM access
+    digest: c00cdf48d85c7031a79d402d39b444783c51857be6909b71c7345e7f8fe8dcdb
+    home: https://github.com/aws/amazon-eks-pod-identity-webhook/
+    keywords:
+    - aws
+    - iam
+    - eks
+    - irsa
+    - iam-roles-for-service-accounts
+    - eks-pod-identity-webhook
+    - aws-pod-identity-webhook
+    maintainers:
+    - email: github@jkroepke.de
+      name: jkroepke
+      url: https://github.com/jkroepke
+    name: amazon-eks-pod-identity-webhook
+    sources:
+    - https://github.com/jkroepke/helm-charts/tree/main/charts/amazon-eks-pod-identity-webhook
+    - https://github.com/aws/amazon-eks-pod-identity-webhook/
+    type: application
+    urls:
+    - https://github.com/jkroepke/helm-charts/releases/download/amazon-eks-pod-identity-webhook-2.3.0/amazon-eks-pod-identity-webhook-2.3.0.tgz
+    version: 2.3.0
+  - annotations:
+      artifacthub.io/changes: |
+        - "[Changed]: Change the CN of the certificate to {{ include "amazon-eks-pod-identity-webhook.fullname" . }}"
+    apiVersion: v2
     appVersion: v0.5.2
     created: "2023-11-02T08:51:51.89777671Z"
     description: A Kubernetes webhook for pods that need AWS IAM access
@@ -288,6 +317,28 @@ entries:
     - https://github.com/jkroepke/helm-charts/releases/download/example-0.1.0/example-0.1.0.tgz
     version: 0.1.0
   github-exporter:
+  - apiVersion: v2
+    appVersion: 1.7.0
+    created: "2024-12-14T08:02:02.168574839Z"
+    description: exporter for export github metrics
+    digest: ff6c1d5c74f15bd1b84327ee228a65c61d4c9fa20a0d60c9acbfcad5d073f7d4
+    home: https://github.com/jkroepke/github_exporter
+    keywords:
+    - github_exporter
+    - config
+    - exporter
+    - github
+    - prometheus
+    maintainers:
+    - email: github@jkroepke.de
+      name: jkroepke
+      url: https://github.com/jkroepke
+    name: github-exporter
+    sources:
+    - https://github.com/adorsys/github_exporter
+    urls:
+    - https://github.com/jkroepke/helm-charts/releases/download/github-exporter-1.2.0/github-exporter-1.2.0.tgz
+    version: 1.2.0
   - apiVersion: v2
     appVersion: 1.7.0
     created: "2023-10-01T15:48:04.448640703Z"
@@ -657,4 +708,4 @@ entries:
     urls:
     - https://github.com/jkroepke/helm-charts/releases/download/values-1.0.0/values-1.0.0.tgz
     version: 1.0.0
-generated: "2024-09-05T16:43:27.42055327Z"
+generated: "2024-12-14T08:02:02.16870402Z"
