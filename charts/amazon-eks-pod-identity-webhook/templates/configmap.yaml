@@ -7,5 +7,5 @@ metadata:
   labels:
     {{- include "amazon-eks-pod-identity-webhook.labels" . | nindent 4 }}
 data:
-  config: {{ .Values.config.podIdentityWebhookMap.data | toJson | quote }}
+  config: {{ .Values.config.podIdentityWebhookMap.data | toJson | tpl . | quote }}
 {{- end }}
