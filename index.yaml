@@ -6,6 +6,35 @@ entries:
         - "[Changed]: Change the CN of the certificate to {{ include "amazon-eks-pod-identity-webhook.fullname" . }}"
     apiVersion: v2
     appVersion: v0.6.1
+    created: "2024-12-24T14:36:02.35513073Z"
+    description: A Kubernetes webhook for pods that need AWS IAM access
+    digest: 6c89a7fb8e266130a3a603da36415ceb7f0020de381b4914f85a6e8e306706f4
+    home: https://github.com/aws/amazon-eks-pod-identity-webhook/
+    keywords:
+    - aws
+    - iam
+    - eks
+    - irsa
+    - iam-roles-for-service-accounts
+    - eks-pod-identity-webhook
+    - aws-pod-identity-webhook
+    maintainers:
+    - email: github@jkroepke.de
+      name: jkroepke
+      url: https://github.com/jkroepke
+    name: amazon-eks-pod-identity-webhook
+    sources:
+    - https://github.com/jkroepke/helm-charts/tree/main/charts/amazon-eks-pod-identity-webhook
+    - https://github.com/aws/amazon-eks-pod-identity-webhook/
+    type: application
+    urls:
+    - https://github.com/jkroepke/helm-charts/releases/download/amazon-eks-pod-identity-webhook-2.3.1/amazon-eks-pod-identity-webhook-2.3.1.tgz
+    version: 2.3.1
+  - annotations:
+      artifacthub.io/changes: |
+        - "[Changed]: Change the CN of the certificate to {{ include "amazon-eks-pod-identity-webhook.fullname" . }}"
+    apiVersion: v2
+    appVersion: v0.6.1
     created: "2024-12-14T08:02:02.056508142Z"
     description: A Kubernetes webhook for pods that need AWS IAM access
     digest: c00cdf48d85c7031a79d402d39b444783c51857be6909b71c7345e7f8fe8dcdb
@@ -708,4 +737,4 @@ entries:
     urls:
     - https://github.com/jkroepke/helm-charts/releases/download/values-1.0.0/values-1.0.0.tgz
     version: 1.0.0
-generated: "2024-12-14T08:02:02.16870402Z"
+generated: "2024-12-24T14:36:02.35522504Z"
