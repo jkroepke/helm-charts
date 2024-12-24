@@ -133,6 +133,8 @@ metrics:
     honorLabels: false
     # -- RelabelConfigs to apply to samples before scraping.
     relabelings: []
+    # -- More properties for the endpoint configuration of the service monitor.
+    endpointAdditionalProperties: {}
 
 readinessProbe:
   httpGet:
@@ -169,20 +171,33 @@ resources:
   requests: {}
 
 securityContext:
-  # -- Pod securityContext: Enable read-only root filesystem
+  # -- Container securityContext: Allow privilege escalation
+  allowPrivilegeEscalation: false
+  # -- Container securityContext: Enable read-only root filesystem
   readOnlyRootFilesystem: true
-  # -- Pod securityContext: Run primary group id
+  # -- Container securityContext: Run primary group id
   runAsGroup: 1
-  # -- Pod securityContext: Disable root user
+  # -- Container securityContext: Disable root user
   runAsNonRoot: false
-  # -- Pod securityContext: Run user id
+  # -- Container securityContext: Run user id
   runAsUser: 65534
+  # -- Container securityContext: Drop capabilities
+  capabilities:
+    drop: ["ALL"]
+
+
+podSecurityContext:
+  # -- Pod securityContext: Seccomp profile
+  seccompProfile:
+    type: RuntimeDefault
 
 service:
   # -- Service type
   type: ClusterIP
   # -- Service annotations
   annotations: {}
+  # -- Service labels.
+  labels: {}
 
 serviceAccount:
   # -- Enable creation of ServiceAccount for nginx pod
@@ -201,10 +216,6 @@ podAnnotations: {}
 #  prometheus.io/port: "9999"
 #  prometheus.io/scheme: "http"
 #  prometheus.io/scrape: "true"
-
-# -- amazon-eks-pod-identity-webhook pods' Security Context.
-podSecurityContext: {}
-#  fsGroup: 2000
 
 # -- Affinity for pod assignment
 affinity: {}

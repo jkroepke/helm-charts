@@ -31,13 +31,11 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- if .Values.priorityClassName }}
-      priorityClassName: "{{ .Values.priorityClassName }}"
+      {{- with .Values.priorityClassName }}
+      priorityClassName: {{ . | quote }}
       {{- end }}
       containers:
         - name: {{ .Chart.Name }}
-          securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           command:
@@ -46,9 +44,10 @@ spec:
             - --aws-default-region={{ .Values.config.defaultAwsRegion }}
             - --in-cluster=false
             - --logtostderr
-            - --namespace={{ include "amazon-eks-pod-identity-webhook.namespace" . }}
+            - --namespace=$(POD_NAMESPACE)
             - --metrics-port={{ .Values.config.ports.metrics }}
             - --port={{ .Values.config.ports.webhook }}
+            - --service-name={{ include "amazon-eks-pod-identity-webhook.fullname" . }}
             - --sts-regional-endpoint={{ .Values.config.stsRegionalEndpoint }}
             - --token-audience={{ .Values.config.tokenAudience }}
             - --token-expiration={{ .Values.config.tokenExpiration }}
@@ -61,10 +60,6 @@ spec:
             {{- if .Values.config.extraArgs }}
             {{- toYaml .Values.config.extraArgs | nindent 12 }}
             {{- end }}
-          volumeMounts:
-            - name: cert
-              mountPath: "/etc/webhook/certs"
-              readOnly: true
           ports:
             - name: https
               containerPort: {{ .Values.config.ports.webhook }}
@@ -72,16 +67,49 @@ spec:
             - name: metrics
               containerPort: {{ .Values.config.ports.metrics }}
               protocol: TCP
+          env:
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+          {{- with .Values.livenessProbe }}
           livenessProbe:
-            {{- toYaml .Values.livenessProbe | nindent 12 }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.readinessProbe }}
           readinessProbe:
-            {{- toYaml .Values.readinessProbe | nindent 12 }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.resources }}
           resources:
-            {{- toYaml .Values.resources | nindent 12 }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.securityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          volumeMounts:
+            - name: cert
+              mountPath: "/etc/webhook/certs"
+              readOnly: true
       hostNetwork: {{ .Values.hostNetwork }}
       serviceAccountName: {{ include "amazon-eks-pod-identity-webhook.serviceAccountName" . }}
+      {{- with .Values.podSecurityContext }}
       securityContext:
-        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- tpl (toYaml .) $ | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- tpl (toYaml .) $  | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- tpl (toYaml .) $  | nindent 8 }}
+      {{- end }}
       volumes:
         - name: cert
           secret:
@@ -90,15 +118,3 @@ spec:
             {{- else }}
             secretName: "{{ include "amazon-eks-pod-identity-webhook.fullname" . }}-cert"
             {{- end }}
-      {{- if .Values.nodeSelector }}
-      nodeSelector:
-        {{- tpl (toYaml .Values.nodeSelector) . | nindent 8 }}
-      {{- end }}
-      {{- if .Values.affinity }}
-      affinity:
-        {{- tpl (toYaml .Values.affinity ) . | nindent 8 }}
-      {{- end }}
-      {{- if .Values.tolerations }}
-      tolerations:
-        {{- tpl (toYaml .Values.tolerations) . | nindent 8 }}
-      {{- end }}

@@ -50,7 +50,6 @@ helm.sh/chart: {{ include "amazon-eks-pod-identity-webhook.chart" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
-app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end }}
 
 {{/*
@@ -72,8 +71,8 @@ Create the name of the service account to use
 {{- end }}
 {{- end }}
 
-{{/* 
-Get PodDisruptionBudget API Version 
+{{/*
+Get PodDisruptionBudget API Version
 */}}
 {{- define "amazon-eks-pod-identity-webhook.pdb.apiVersion" -}}
   {{- if and (.Capabilities.APIVersions.Has "policy/v1") (semverCompare ">= 1.21-0" .Capabilities.KubeVersion.Version) -}}
