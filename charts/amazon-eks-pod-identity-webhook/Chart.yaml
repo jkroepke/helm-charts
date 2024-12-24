@@ -1,7 +1,7 @@
 apiVersion: v2
 name: amazon-eks-pod-identity-webhook
 description: A Kubernetes webhook for pods that need AWS IAM access
-version: 2.3.1
+version: 2.3.2
 type: application
 # renovate: image=amazon/amazon-eks-pod-identity-webhook
 appVersion: "v0.6.1"
@@ -21,6 +21,3 @@ keywords:
   - iam-roles-for-service-accounts
   - eks-pod-identity-webhook
   - aws-pod-identity-webhook
-annotations:
-  artifacthub.io/changes: |
-    - "[Changed]: Change the CN of the certificate to {{ include "amazon-eks-pod-identity-webhook.fullname" . }}"
