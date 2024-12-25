@@ -3,6 +3,32 @@ entries:
   amazon-eks-pod-identity-webhook:
   - apiVersion: v2
     appVersion: v0.6.1
+    created: "2024-12-25T21:50:24.996269621Z"
+    description: A Kubernetes webhook for pods that need AWS IAM access
+    digest: b61054e806c091cb1b5db25ccaf1e5176fa282b0ae6cbf0810bbd239bc4ec38e
+    home: https://github.com/aws/amazon-eks-pod-identity-webhook/
+    keywords:
+    - aws
+    - iam
+    - eks
+    - irsa
+    - iam-roles-for-service-accounts
+    - eks-pod-identity-webhook
+    - aws-pod-identity-webhook
+    maintainers:
+    - email: github@jkroepke.de
+      name: jkroepke
+      url: https://github.com/jkroepke
+    name: amazon-eks-pod-identity-webhook
+    sources:
+    - https://github.com/jkroepke/helm-charts/tree/main/charts/amazon-eks-pod-identity-webhook
+    - https://github.com/aws/amazon-eks-pod-identity-webhook/
+    type: application
+    urls:
+    - https://github.com/jkroepke/helm-charts/releases/download/amazon-eks-pod-identity-webhook-2.4.0/amazon-eks-pod-identity-webhook-2.4.0.tgz
+    version: 2.4.0
+  - apiVersion: v2
+    appVersion: v0.6.1
     created: "2024-12-24T15:21:21.245303131Z"
     description: A Kubernetes webhook for pods that need AWS IAM access
     digest: ba5580f2f2bc70b529a09d2e798c3b860fd0e5b2d2bf352c4a413d532ca278b4
@@ -763,4 +789,4 @@ entries:
     urls:
     - https://github.com/jkroepke/helm-charts/releases/download/values-1.0.0/values-1.0.0.tgz
     version: 1.0.0
-generated: "2024-12-24T15:21:21.245427424Z"
+generated: "2024-12-25T21:50:24.996375057Z"
