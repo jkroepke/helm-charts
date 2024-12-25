@@ -33,15 +33,18 @@ webhooks:
     {{- end }}
     objectSelector:
       matchExpressions:
+        - key: "eks.amazonaws.com/skip-pod-identity-webhook"
+          operator: "DoesNotExist"
+          values: []
         - key: "app.kubernetes.io/name"
           operator: "NotIn"
           values:
             - "{{ include "amazon-eks-pod-identity-webhook.name" . }}"
-      {{- if .Values.mutatingWebhook.objectSelector.matchExpressions }}
-      {{- toYaml .Values.mutatingWebhook.objectSelector.matchExpressions | nindent 8 }}
+      {{- with .Values.mutatingWebhook.objectSelector.matchExpressions }}
+      {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- if .Values.mutatingWebhook.objectSelector.matchLabels }}
-      matchLabels: {{- toYaml .Values.mutatingWebhook.objectSelector.matchLabels | nindent 8 }}
+      {{- with .Values.mutatingWebhook.objectSelector.matchLabels }}
+      matchLabels: {{- toYaml . | nindent 8 }}
       {{- end }}
     sideEffects: None
     admissionReviewVersions:

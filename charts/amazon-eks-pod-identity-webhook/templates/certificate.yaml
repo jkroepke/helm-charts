@@ -1,17 +1,18 @@
 {{- if .Values.pki.certManager.enabled }}
+{{- $fullName := include "amazon-eks-pod-identity-webhook.fullname" . }}
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: {{ include "amazon-eks-pod-identity-webhook.fullname" . }}
+  name: {{ $fullName }}
   namespace: {{ include "amazon-eks-pod-identity-webhook.namespace" . }}
 spec:
-  secretName: "{{ include "amazon-eks-pod-identity-webhook.fullname" . }}-cert"
-  commonName: "{{ include "amazon-eks-pod-identity-webhook.fullname" . }}"
+  secretName: "{{ $fullName }}-cert"
+  commonName: "{{ $fullName }}"
   dnsNames:
-    - "{{ include "amazon-eks-pod-identity-webhook.fullname" . }}"
-    - "{{ include "amazon-eks-pod-identity-webhook.fullname" . }}.{{ include "amazon-eks-pod-identity-webhook.namespace" . }}"
-    - "{{ include "amazon-eks-pod-identity-webhook.fullname" . }}.{{ include "amazon-eks-pod-identity-webhook.namespace" . }}.svc"
-    - "{{ include "amazon-eks-pod-identity-webhook.fullname" . }}.{{ include "amazon-eks-pod-identity-webhook.namespace" . }}.svc.local"
+    - "{{ $fullName }}"
+    - "{{ $fullName }}.{{ include "amazon-eks-pod-identity-webhook.namespace" . }}"
+    - "{{ $fullName }}.{{ include "amazon-eks-pod-identity-webhook.namespace" . }}.svc"
+    - "{{ $fullName }}.{{ include "amazon-eks-pod-identity-webhook.namespace" . }}.svc.local"
   duration: "{{ .Values.pki.certManager.certificate.duration }}"
   renewBefore: "{{ .Values.pki.certManager.certificate.renewBefore }}"
   issuerRef:
@@ -19,7 +20,7 @@ spec:
     name: {{ .Values.pki.certManager.existingIssuer.name }}
     kind: {{ .Values.pki.certManager.existingIssuer.kind }}
     {{- else }}
-    name: {{ include "amazon-eks-pod-identity-webhook.fullname" . }}
+    name: {{ $fullName }}
     kind: Issuer
     {{- end }}
 {{- end }}
