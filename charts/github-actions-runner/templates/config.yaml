@@ -2,8 +2,8 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ include "github-actions-runner.fullname" . }}-entrypoint
+  name: {{ include "github-actions-runner.fullname" . | trunc 52 | trimSuffix "-" }}-entrypoint
   labels:
     {{- include "github-actions-runner.labels" . | nindent 4 }}
 data:
-  {{ .Files.AsConfig "files/*.sh" | nindent 2 }}
+  {{ (.Files.Glob "files/*.sh").AsConfig | nindent 2 }}
