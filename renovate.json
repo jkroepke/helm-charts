@@ -1,16 +1,21 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:base"
+    "config:recommended"
   ],
   "schedule": [
     "before 3am on the first day of the month"
   ],
   "bumpVersion": "minor",
-  "postUpdateOptions": ["helmUpdateSubChartArchives"],
-  "regexManagers": [
+  "postUpdateOptions": [
+    "helmUpdateSubChartArchives"
+  ],
+  "customManagers": [
     {
-      "fileMatch": ["(^|/)Chart\\.yaml$"],
+      "customType": "regex",
+      "fileMatch": [
+        "(^|/)Chart\\.yaml$"
+      ],
       "matchStrings": [
         "#\\s?renovate: image=(?<depName>.*?)\\s?appVersion:\\s?\\\"?(?<currentValue>[\\w+\\.\\-]*)"
       ],
@@ -19,15 +24,15 @@
   ],
   "packageRules": [
     {
-      "matchPackagePatterns": [
-        "*"
-      ],
       "matchUpdateTypes": [
         "minor",
         "patch"
       ],
       "groupName": "all non-major dependencies",
-      "groupSlug": "all-minor-patch"
+      "groupSlug": "all-minor-patch",
+      "matchPackageNames": [
+        "*"
+      ]
     }
   ]
 }
