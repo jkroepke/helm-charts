@@ -48,7 +48,7 @@ spec:
             - --metrics-port={{ .Values.config.ports.metrics }}
             - --port={{ .Values.config.ports.webhook }}
             - --service-name={{ include "amazon-eks-pod-identity-webhook.fullname" . }}
-            - --sts-regional-endpoint={{ tpl .Values.config.stsRegionalEndpoint . }}
+            - --sts-regional-endpoint={{ tpl (print .Values.config.stsRegionalEndpoint) . }}
             - --token-audience={{ tpl .Values.config.tokenAudience . }}
             - --token-expiration={{ .Values.config.tokenExpiration }}
             - --token-mount-path={{ .Values.config.tokenMountPath }}
