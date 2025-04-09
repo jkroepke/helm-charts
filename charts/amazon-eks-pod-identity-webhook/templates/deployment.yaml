@@ -58,7 +58,7 @@ spec:
             - --watch-config-map
             {{- end }}
             {{- if .Values.config.extraArgs }}
-            {{- toYaml .Values.config.extraArgs | nindent 12 }}
+            {{- tpl (toYaml .Values.config.extraArgs) . | nindent 12 }}
             {{- end }}
           ports:
             - name: https
