@@ -40,16 +40,16 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           command:
             - /webhook
-            - --annotation-prefix={{ .Values.config.annotationPrefix }}
-            - --aws-default-region={{ .Values.config.defaultAwsRegion }}
+            - --annotation-prefix={{ tpl .Values.config.annotationPrefix . }}
+            - --aws-default-region={{ tpl .Values.config.defaultAwsRegion . }}
             - --in-cluster=false
             - --logtostderr
             - --namespace=$(POD_NAMESPACE)
             - --metrics-port={{ .Values.config.ports.metrics }}
             - --port={{ .Values.config.ports.webhook }}
             - --service-name={{ include "amazon-eks-pod-identity-webhook.fullname" . }}
-            - --sts-regional-endpoint={{ .Values.config.stsRegionalEndpoint }}
-            - --token-audience={{ .Values.config.tokenAudience }}
+            - --sts-regional-endpoint={{ tpl (print .Values.config.stsRegionalEndpoint) . }}
+            - --token-audience={{ tpl .Values.config.tokenAudience . }}
             - --token-expiration={{ .Values.config.tokenExpiration }}
             - --token-mount-path={{ .Values.config.tokenMountPath }}
             - --tls-cert=/etc/webhook/certs/tls.crt
@@ -58,7 +58,7 @@ spec:
             - --watch-config-map
             {{- end }}
             {{- if .Values.config.extraArgs }}
-            {{- toYaml .Values.config.extraArgs | nindent 12 }}
+            {{- tpl (toYaml .Values.config.extraArgs) . | nindent 12 }}
             {{- end }}
           ports:
             - name: https
