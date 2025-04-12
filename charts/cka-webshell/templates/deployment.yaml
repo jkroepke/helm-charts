@@ -1,0 +1,138 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "cka-webshell.fullname" . }}
+  labels:
+    {{- include "cka-webshell.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      {{- include "cka-webshell.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "cka-webshell.labels" . | nindent 8 }}
+        {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      enableServiceLinks: false
+      hostAliases:
+        - ip: "127.0.0.1"
+          hostnames:
+            - "host"
+            - "registry"
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      hostname: cka-shell
+      hostIPC: false
+      serviceAccountName: {{ include "cka-webshell.serviceAccountName" . }}
+      {{- with .Values.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          {{- with .Values.securityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            # https://github.com/kubernetes/kubernetes/blob/b15dfce6cbd0d5bbbcd6172cf7e2082f4d31055e/staging/src/k8s.io/client-go/tools/clientcmd/client_config.go#L634-L636
+            - name: POD_NAMESPACE
+              value: default
+            - name: DOCKER_HOST
+              value: unix:///run/docker.sock
+            - name: CONTAINER_RUNTIME_ENDPOINT
+              value: unix:///run/containerd/containerd.sock
+          command:
+            - /entrypoint.sh
+          args:
+            - "ttyd"
+            - "--port"
+            - "7681"
+            - "-t"
+            - "titleFixed=CKA Webshell by Joe"
+            - "--writable"
+            - "--"
+            - "bash"
+            - "-l"
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.port }}
+              protocol: TCP
+          volumeMounts:
+            - name: shell-config
+              mountPath: /etc/vim/vimrc.local
+              subPath: vimrc.local
+              readOnly: true
+            - name: shell-config
+              mountPath: /etc/profile.d/shell.sh
+              subPath: shell.sh
+              readOnly: true
+            - name: shell-config
+              mountPath: /entrypoint.sh
+              subPath: entrypoint.sh
+              readOnly: true
+            - name: tmp
+              mountPath: /tmp/
+            - name: run-containerd
+              mountPath: /run/containerd/
+            - name: var-run
+              mountPath: /run/
+        - name: docker-daemon
+          image: docker:dind
+          command:
+            - dockerd-entrypoint.sh
+          args:
+            - "dockerd"
+            - "--host=unix:///var/run/docker.sock"
+            - "--insecure-registry=registry"
+            - "--insecure-registry=registry:80"
+            - "--insecure-registry=10.0.0.0/24"
+          securityContext:
+            privileged: true
+          ports:
+            - containerPort: 2375
+          volumeMounts:
+            - name: var-run
+              mountPath: /var/run/
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      volumes:
+        - name: shell-config
+          configMap:
+            name: {{ include "cka-webshell.fullname" . }}
+            defaultMode: 0755
+        - name: tmp
+          emptyDir: {}
+        - name: run-containerd
+          hostPath:
+            path: /run/containerd/
+        - name: var-run
+          emptyDir: {}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

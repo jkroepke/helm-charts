@@ -1,0 +1,51 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "cka-webshell.fullname" . }}
+  labels:
+    {{- include "cka-webshell.labels" . | nindent 4 }}
+data:
+  entrypoint.sh: |-
+    #!/bin/sh
+
+    apk add --no-cache docker kubectl curl jq git tmux vim helm bash-completion kustomize cri-tools openssh
+
+    curl -sSfL https://github.com/trzsz/trzsz-go/releases/download/v1.1.8/trzsz_1.1.8_linux_aarch64.tar.gz | tar -xzf - --strip-components=1 -C /usr/local/bin
+
+    exec /sbin/tini -- "$@"
+  shell.sh: |-
+    #!/bin/bash
+    # This is a sample profile script that sets up the environment for the webshell
+    # You can customize this script according to your needs
+
+    # Set the PATH variable
+    export PATH=$PATH:/usr/local/bin
+    export EDITOR=vim
+
+    # Set the PS1 variable for the shell prompt
+    export PS1="\u@cka-shell:\w$ "
+
+    # Load any additional environment variables or configurations here
+    alias useradd="adduser -G docker -D -s /bin/bash"
+
+    # kubectl completion
+    source <(kubectl completion bash)
+    alias k='kubectl' # Already set in the exam env
+    alias kaf='kubectl apply -f'
+    export dry='--dry-run=client -o yaml'
+
+    complete -F __start_kubectl k
+
+
+    echo "Connecting to the CKA Webshell..."
+    echo "Welcome to the CKA Webshell by Joe!"
+    echo ""
+    echo "Local Docker Registry: localhost:5000"
+    echo "Please use the following command to build or tag:"
+    echo "docker tag <image> localhost:5000/<user>/<image> or docker build -t localhost:5000/<user>/<image> ."
+    echo "then use the following command to push:"
+    echo "docker push localhost:5000/<user>/<image>"
+    echo ""
+    echo ""
+  vimrc.local: |
+    set mouse-=a

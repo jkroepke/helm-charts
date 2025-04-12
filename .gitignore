@@ -1,3 +1,4 @@
 .idea
 charts/*/charts/*.tgz
 *.iml
+values.local.yaml
