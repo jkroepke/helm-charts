@@ -93,6 +93,8 @@ spec:
               mountPath: /run/containerd/
             - name: var-run
               mountPath: /run/
+            - name: hostfs
+              mountPath: /hostfs/
         - name: docker-daemon
           image: docker:dind
           command:
@@ -124,6 +126,9 @@ spec:
             path: /run/containerd/
         - name: var-run
           emptyDir: {}
+        - name: hostfs
+          hostPath:
+            path: /var/hostfs/cka-webshell/
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

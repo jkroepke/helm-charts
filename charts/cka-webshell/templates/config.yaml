@@ -40,6 +40,8 @@ data:
     echo "Connecting to the CKA Webshell..."
     echo "Welcome to the CKA Webshell by Joe!"
     echo ""
+    echo "Your tasks are in the /hostfs/tasks/ directory."
+    echo ""
     echo "Local Docker Registry: localhost:5000"
     echo "Please use the following command to build or tag:"
     echo "docker tag <image> localhost:5000/<user>/<image> or docker build -t localhost:5000/<user>/<image> ."
