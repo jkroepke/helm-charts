@@ -9,6 +9,8 @@
   ],
   "suppressNotifications": ["prEditedNotification"],
   "dependencyDashboardApproval": false,
+  "automerge": true,
+  "platformAutomerge": true,
   "customManagers": [
     {
       "customType": "regex",
