@@ -3,8 +3,8 @@ name: github-exporter
 description: exporter for export github metrics
 home: https://github.com/jkroepke/github_exporter
 version: 1.2.0
-# renovate: image=jkroepke/github_exporter
-appVersion: 1.7.0
+# renovate: docker=jkroepke/github_exporter
+appVersion: 1.6.0
 maintainers:
   - name: jkroepke
     email: github@jkroepke.de
