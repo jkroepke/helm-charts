@@ -85,7 +85,7 @@
         {
           "name": "Updating Chart version",
           "filePatterns": ["{{packageFileDir}}/Chart.{yaml,yml}"],
-          "matchStrings": ["version:\\s\"?(?<version>[^\\s]+)"],
+          "matchStrings": ["^version:\\s\"?(?<version>\\d+\\.\\d+\\.\\d+)\"?$"],
           "bumpType": "{{#if isPatch}}patch{{else}}minor{{/if}}"
         }
       ]
