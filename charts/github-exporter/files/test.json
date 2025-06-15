@@ -1,0 +1,2 @@
+# renovate: docker=jkroepke/github_exporter
+appVersion: 1.6.0
