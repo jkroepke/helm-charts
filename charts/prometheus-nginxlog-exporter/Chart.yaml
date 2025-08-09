@@ -1,0 +1,25 @@
+apiVersion: v2
+name: prometheus-nginxlog-exporter
+description: |
+  Prometheus exporter for Nginx access logs.
+  It can be used to export metrics from Nginx access logs in a format that Prometheus can scrape.
+  The exporter supports multiple log formats and can be configured to parse custom log formats.
+  It also supports TLS and authentication for secure communication with Prometheus.
+version: "1.0.0"
+type: application
+# renovate: docker=ghcr.io/jkroepke/prometheus-nginxlog-exporter
+appVersion: "v2.0.0"
+home: https://github.com/jkroepke/prometheus-nginxlog-exporter/
+sources:
+  - https://github.com/jkroepke/helm-charts/tree/main/charts/prometheus-nginxlog-exporter
+  - https://github.com/jkroepke/prometheus-nginxlog-exporter/
+maintainers:
+  - name: jkroepke
+    email: mail@jkroepke.de
+    url: https://github.com/jkroepke
+keywords:
+  - prometheus-nginxlog-exporter
+  - nginxlog-exporter
+  - prometheus
+  - nginx
+  - exporter

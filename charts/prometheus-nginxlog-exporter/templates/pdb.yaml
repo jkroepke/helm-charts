@@ -1,0 +1,13 @@
+{{- if and .Values.podDisruptionBudget.enabled (gt (.Values.replicaCount | int) 1) -}}
+apiVersion: {{ include "prometheus-nginxlog-exporter.pdb.apiVersion" . }}
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "prometheus-nginxlog-exporter.fullname" . }}
+  labels:
+    {{- include "prometheus-nginxlog-exporter.labels" . | nindent 4 }}
+spec:
+  {{- omit .Values.podDisruptionBudget "enabled" | toYaml | nindent 2 }}
+  selector:
+    matchLabels:
+      {{- include "prometheus-nginxlog-exporter.selectorLabels" . | nindent 6 }}
+{{- end -}}
