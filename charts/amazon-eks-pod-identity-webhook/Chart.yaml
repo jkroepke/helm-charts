@@ -3,7 +3,7 @@ name: amazon-eks-pod-identity-webhook
 description: A Kubernetes webhook for pods that need AWS IAM access
 version: "2.5.2"
 type: application
-# renovate: docker=amazon/amazon-eks-pod-identity-webhook
+# renovate: docker=eks/amazon-eks-pod-identity-webhook registry=public.ecr.aws
 appVersion: "v0.6.7"
 home: https://github.com/aws/amazon-eks-pod-identity-webhook/
 sources:
