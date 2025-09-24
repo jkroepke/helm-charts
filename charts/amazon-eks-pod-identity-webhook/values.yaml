@@ -23,9 +23,9 @@ priorityClassName: ""
 image:
   pullPolicy: IfNotPresent
   # -- amazon-eks-pod-identity-webhook image registry
-  registry: docker.io
+  registry: public.ecr.aws
   # -- amazon-eks-pod-identity-webhook image repository
-  repository: amazon/amazon-eks-pod-identity-webhook
+  repository: eks/amazon-eks-pod-identity-webhook
   # -- amazon-eks-pod-identity-webhook image tag (immutable tags are recommended).
   # @default -- `.Chart.AppVersion`
   tag: ""

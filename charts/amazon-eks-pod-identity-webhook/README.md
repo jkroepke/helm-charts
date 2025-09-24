@@ -45,8 +45,8 @@ helm install amazon-eks-pod-identity-webhook jkroepke/amazon-eks-pod-identity-we
 | fullnameOverride | string | `""` | String to fully override amazon-eks-pod-identity.fullname template |
 | hostNetwork | bool | `false` | Specify if host network should be enabled for amazon-eks-pod-identity-webhook pod |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
-| image.registry | string | `"docker.io"` | amazon-eks-pod-identity-webhook image registry |
-| image.repository | string | `"amazon/amazon-eks-pod-identity-webhook"` | amazon-eks-pod-identity-webhook image repository |
+| image.registry | string | `"public.ecr.aws"` | amazon-eks-pod-identity-webhook image registry |
+| image.repository | string | `"eks/amazon-eks-pod-identity-webhook"` | amazon-eks-pod-identity-webhook image repository |
 | image.tag | string | `.Chart.AppVersion` | amazon-eks-pod-identity-webhook image tag (immutable tags are recommended). |
 | imagePullSecrets | list | `[]` | registry secret names as an array |
 | livenessProbe.httpGet.path | string | `"/healthz"` | This is the liveness check endpoint |
