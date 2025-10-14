@@ -95,4 +95,5 @@ helm install amazon-eks-pod-identity-webhook jkroepke/amazon-eks-pod-identity-we
 | serviceAccount.annotations | object | `{}` | Annotations for service account. Evaluated as a template. |
 | serviceAccount.create | bool | `true` | Enable creation of ServiceAccount for nginx pod |
 | serviceAccount.name | string | A name is generated using the `amazon-eks-pod-identity-webhook.fullname` template | The name of the ServiceAccount to use. |
+| strategy | object | `{}` | Configure the pod replacement strategy |
 | tolerations | list | `[]` | Tolerations for pod assignment. Evaluated as a template. |

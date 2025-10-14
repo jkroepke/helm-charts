@@ -11,6 +11,10 @@ metadata:
   labels:
     {{- include "amazon-eks-pod-identity-webhook.labels" . | nindent 4 }}
 spec:
+  {{- with .Values.strategy }}
+  strategy:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:

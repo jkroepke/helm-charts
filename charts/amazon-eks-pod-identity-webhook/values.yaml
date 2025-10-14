@@ -11,6 +11,9 @@ fullnameOverride: ""
 # -- Number of amazon-eks-pod-identity-webhook replicas to deploy
 replicaCount: 1
 
+# -- Configure the pod replacement strategy
+strategy: {}
+
 # -- https://kubernetes.io/docs/tasks/run-application/configure-pdb/
 podDisruptionBudget:
   enabled: false
