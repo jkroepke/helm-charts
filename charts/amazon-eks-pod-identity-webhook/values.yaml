@@ -71,10 +71,6 @@ config:
     #    RoleARN: "arn:aws-test:iam::123456789012:role/myserviceaccount.default.sa.minimal.example.com"
     #    Audience: "amazonaws.com"
     #    TokenExpiration: 0
-    #  # Example with templating (keys and values can use Helm template syntax):
-    #  "{{ .Release.Namespace }}/myserviceaccount":
-    #    RoleARN: "{{ .Values.global.awsRoleArn }}"
-    #    Audience: "{{ .Values.config.tokenAudience }}"
 
 mutatingWebhook:
   # -- Annotations for amazon-eks-pod-identity-webhook mutating webhook
