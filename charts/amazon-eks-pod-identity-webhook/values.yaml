@@ -65,12 +65,16 @@ config:
     ## Names are hard-coded
     ## ref: https://github.com/aws/amazon-eks-pod-identity-webhook/blob/0d254eee1537e0745679252ca60f020fa1a461f0/pkg/cache/cache.go#L259-L262
     name: "pod-identity-webhook"
-    # -- Content of pod-identity-webhook configmap
+    # -- Content of pod-identity-webhook configmap. Values support templating.
     data: {}
     #  "default/myserviceaccount":
     #    RoleARN: "arn:aws-test:iam::123456789012:role/myserviceaccount.default.sa.minimal.example.com"
     #    Audience: "amazonaws.com"
     #    TokenExpiration: 0
+    #  # Example with templating (keys and values can use Helm template syntax):
+    #  "{{ .Release.Namespace }}/myserviceaccount":
+    #    RoleARN: "{{ .Values.global.awsRoleArn }}"
+    #    Audience: "{{ .Values.config.tokenAudience }}"
 
 mutatingWebhook:
   # -- Annotations for amazon-eks-pod-identity-webhook mutating webhook
