@@ -1,0 +1,147 @@
+---
+# -- String to partially override amazon-eks-pod-identity-webhook.fullname template (will maintain the release name)
+nameOverride: ""
+
+# -- String to partially override amazon-eks-pod-identity-webhook.fullname template (will maintain the release name)
+namespaceOverride: ""
+
+# -- String to fully override amazon-eks-pod-identity.fullname template
+fullnameOverride: ""
+
+# -- Number of amazon-eks-pod-identity-webhook replicas to deploy
+replicaCount: 1
+
+# -- https://kubernetes.io/docs/tasks/run-application/configure-pdb/
+podDisruptionBudget:
+  enabled: false
+  minAvailable:
+  maxUnavailable:
+
+# -- PriorityClass applied to deployment
+priorityClassName: ""
+
+image:
+  pullPolicy: IfNotPresent
+  # -- amazon-eks-pod-identity-webhook image registry
+  registry: docker.io
+  # -- amazon-eks-pod-identity-webhook image repository
+  repository: jkroepke/prometheus-nginxlog-exporter
+  # -- amazon-eks-pod-identity-webhook image tag (immutable tags are recommended).
+  # @default -- `.Chart.AppVersion`
+  tag: ""
+
+# -- registry secret names as an array
+imagePullSecrets: []
+
+config: {}
+
+metrics:
+  serviceMonitor:
+    # -- Create serviceMonitor Resource for scraping metrics using PrometheusOperator
+    enabled: false
+    # -- Specify the namespace in which the serviceMonitor resource will be created
+    namespace: ""
+    # -- Used to pass Labels that are required by the installed Prometheus Operator
+    additionalLabels: {}
+    # -- Specify the interval at which metrics should be scraped
+    interval: 30s
+    # -- Specify the timeout after which the scrape is ended
+    scrapeTimeout: ""
+    # -- honorLabels chooses the metric's labels on collisions with target labels
+    honorLabels: false
+    # -- RelabelConfigs to apply to samples before scraping.
+    relabelings: []
+    # -- More properties for the endpoint configuration of the service monitor.
+    endpointAdditionalProperties: {}
+
+readinessProbe:
+  httpGet:
+    # -- This is the readiness check endpoint
+    path: /healthz
+    port: https
+    scheme: HTTPS
+
+livenessProbe:
+  httpGet:
+    # -- This is the liveness check endpoint
+    path: /healthz
+    port: https
+    scheme: HTTPS
+
+# -- Annotations for amazon-eks-pod-identity-webhook deployment
+annotations: {}
+
+# -- Specify if host network should be enabled for amazon-eks-pod-identity-webhook pod
+hostNetwork: false
+
+resources:
+  # -- The resources limits for the amazon-eks-pod-identity-webhook container
+  ## Example:
+  ## limits:
+  ##    cpu: 100m
+  ##    memory: 128Mi
+  limits: {}
+  # -- The requested resources for the amazon-eks-pod-identity-webhook container
+  ## Examples:
+  ## requests:
+  ##    cpu: 100m
+  ##    memory: 128Mi
+  requests: {}
+
+securityContext:
+  # -- Container securityContext: Allow privilege escalation
+  allowPrivilegeEscalation: false
+  # -- Container securityContext: Enable read-only root filesystem
+  readOnlyRootFilesystem: true
+  # -- Container securityContext: Run primary group id
+  runAsGroup: 1
+  # -- Container securityContext: Disable root user
+  runAsNonRoot: false
+  # -- Container securityContext: Run user id
+  runAsUser: 65534
+  # -- Container securityContext: Drop capabilities
+  capabilities:
+    drop: ["ALL"]
+
+
+podSecurityContext:
+  # -- Pod securityContext: Seccomp profile
+  seccompProfile:
+    type: RuntimeDefault
+
+service:
+  # -- Service type
+  type: ClusterIP
+  # -- Service annotations
+  annotations: {}
+  # -- Service labels.
+  labels: {}
+
+serviceAccount:
+  # -- Enable creation of ServiceAccount for nginx pod
+  create: true
+  # -- The name of the ServiceAccount to use.
+  # @default -- A name is generated using the `amazon-eks-pod-identity-webhook.fullname` template
+  name: ""
+  # -- Annotations for service account. Evaluated as a template.
+  annotations: {}
+  # -- Automount the service account token. Defaults to true.
+  automountServiceAccountToken: false
+
+# -- Additional labels for amazon-eks-pod-identity-webhook pods
+podLabels: {}
+
+# -- Annotations for amazon-eks-pod-identity-webhook pods
+podAnnotations: {}
+#  prometheus.io/port: "9999"
+#  prometheus.io/scheme: "http"
+#  prometheus.io/scrape: "true"
+
+# -- Affinity for pod assignment
+affinity: {}
+
+# -- Node labels for pod assignment. Evaluated as a template.
+nodeSelector: {}
+
+# -- Tolerations for pod assignment. Evaluated as a template.
+tolerations: []

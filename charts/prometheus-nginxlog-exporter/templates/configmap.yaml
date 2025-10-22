@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "prometheus-nginxlog-exporter.fullname" . }}
+  namespace: {{ include "prometheus-nginxlog-exporter.namespace" . }}
+  labels:
+    {{- include "prometheus-nginxlog-exporter.labels" . | nindent 4 }}
+data:
+  config: |
+    {{- toYaml .Values.config | tpl . | nindent 4 }}
