@@ -1,6 +1,6 @@
 # keycloak-config-cli
 
-![Version: 1.3.1](https://img.shields.io/badge/Version-1.3.1-informational?style=flat-square) ![AppVersion: 6.0.1](https://img.shields.io/badge/AppVersion-6.0.1-informational?style=flat-square)
+![Version: 1.3.2](https://img.shields.io/badge/Version-1.3.2-informational?style=flat-square) ![AppVersion: 6.0.1](https://img.shields.io/badge/AppVersion-6.0.1-informational?style=flat-square)
 
 Import JSON-formatted configuration files into Keycloak - Configuration as Code for Keycloak.
 
@@ -36,6 +36,7 @@ helm install keycloak-config-cli jkroepke/keycloak-config-cli
 | env.IMPORT_FILES_LOCATIONS | string | `"/config/"` |  |
 | env.KEYCLOAK_URL | string | `"http://keycloak:8080"` |  |
 | env.KEYCLOAK_USER | string | `"admin"` |  |
+| extraEnv | object | `{}` |
 | existingConfigSecret | string | `""` |  |
 | existingSecret | string | `""` |  |
 | existingSecretKey | string | `"password"` |  |
