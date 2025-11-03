@@ -1,0 +1,7 @@
+config:
+  podIdentityWebhookMap:
+    enabled: true
+    data:
+      "{{ .Release.Namespace }}/myserviceaccount":
+        RoleARN: "{{ .Values.global.awsRoleArn }}"
+        Audience: "{{ .Values.config.tokenAudience }}"

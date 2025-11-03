@@ -1,4 +1,0 @@
-# Example with templating (keys and values can use Helm template syntax):
-"{{ .Release.Namespace }}/myserviceaccount":
-  RoleARN: "{{ .Values.global.awsRoleArn }}"
-  Audience: "{{ .Values.config.tokenAudience }}"
