@@ -56,7 +56,7 @@ spec:
                   key: "{{ .Values.existingSecretKey }}"
           {{- end }}
           {{- with .Values.extraEnv }}
-          {{- toYaml . | nindent 12 }}
+          {{- tpl (toYaml .) $ | nindent 12 }}
           {{- end }}            
           {{- with .Values.securityContext }}
           securityContext:
