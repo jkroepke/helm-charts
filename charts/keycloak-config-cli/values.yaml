@@ -37,6 +37,15 @@ env:
   KEYCLOAK_USER: admin
   IMPORT_FILES_LOCATIONS: /config/
 
+# Allows passing additional environment variables from existing secrets or configmaps
+# This is mainly helpful for variable substitution within the config files
+extraEnv: {}
+  # - name: MY_SECRET_VARIABLE
+  #   valueFrom:
+  #     secretKeyRef:
+  #       name: my-secrets
+  #       key: secret-key
+
 secrets: {}
 #  KEYCLOAK_PASSWORD:
 
