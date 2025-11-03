@@ -806,6 +806,30 @@ entries:
   keycloak-config-cli:
   - apiVersion: v2
     appVersion: 6.0.1
+    created: "2025-11-03T11:26:08.726455755Z"
+    description: Import JSON-formatted configuration files into Keycloak - Configuration
+      as Code for Keycloak.
+    digest: 7a1a81bec93eeeb2bd79a45c7b811ccb49e6edb3b5a41b8c1d30ae13c4829fbd
+    home: https://github.com/adorsys/keycloak-config-cli
+    keywords:
+    - keycloak
+    - config
+    - import
+    - json
+    - continuous-integration
+    - keycloak-config-cli
+    maintainers:
+    - email: github@jkroepke.de
+      name: jkroepke
+      url: https://github.com/jkroepke
+    name: keycloak-config-cli
+    sources:
+    - https://github.com/adorsys/keycloak-config-cli
+    urls:
+    - https://github.com/jkroepke/helm-charts/releases/download/keycloak-config-cli-1.3.2/keycloak-config-cli-1.3.2.tgz
+    version: 1.3.2
+  - apiVersion: v2
+    appVersion: 6.0.1
     created: "2025-10-22T21:29:56.446538962Z"
     description: Import JSON-formatted configuration files into Keycloak - Configuration
       as Code for Keycloak.
@@ -1093,4 +1117,4 @@ entries:
     urls:
     - https://github.com/jkroepke/helm-charts/releases/download/values-1.0.0/values-1.0.0.tgz
     version: 1.0.0
-generated: "2025-10-22T21:29:56.446648968Z"
+generated: "2025-11-03T11:26:08.726588713Z"
