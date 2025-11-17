@@ -78,6 +78,10 @@ config: {}
 
 existingConfigSecret: ""
 
+# Name of an existing ConfigMap containing realm configuration files
+# Use this instead of existingConfigSecret when configuration data is not sensitive
+existingConfigMap: ""
+
 # Add additional volumes, e.g. for custom secrets
 extraVolumes: ""
 
