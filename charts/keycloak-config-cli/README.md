@@ -36,6 +36,7 @@ helm install keycloak-config-cli jkroepke/keycloak-config-cli
 | env.IMPORT_FILES_LOCATIONS | string | `"/config/"` |  |
 | env.KEYCLOAK_URL | string | `"http://keycloak:8080"` |  |
 | env.KEYCLOAK_USER | string | `"admin"` |  |
+| existingConfigMap | string | `""` |  |
 | existingConfigSecret | string | `""` |  |
 | existingSecret | string | `""` |  |
 | existingSecretKey | string | `"password"` |  |
