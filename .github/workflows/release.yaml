@@ -35,7 +35,6 @@ jobs:
       
       - name: GPG configuration
         run: |-
-          set -x 
           echo "$GPG_KEY" > "$GPG_KEY_PATH"
           mkdir -p "$HOME/.gnupg"
           chmod 0700 "$HOME/.gnupg"
