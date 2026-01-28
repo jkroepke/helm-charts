@@ -46,7 +46,8 @@ jobs:
           gpgconf --kill gpg-agent
           gpgconf --launch gpg-agent
           gpg --batch --yes --passphrase-fd 0 --import "$GPG_KEY_PATH" <<< "$GPG_PASSPHRASE"
-          
+
+          mkdir "${{ runner.temp }}/.gnupg/"
           gpg --batch --yes --export "$GPG_KEY_ID" > "${{ runner.temp }}/.gnupg/pubring.gpg"
           gpg --batch --yes --passphrase-fd 0 --export-secret-keys "$GPG_KEY_ID" > "${{ runner.temp }}/.gnupg/secring.gpg" <<< "$GPG_PASSPHRASE"
         env:
