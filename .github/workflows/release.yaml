@@ -8,6 +8,7 @@ on:
 
 jobs:
   release:
+    environment: release
     permissions:
       contents: write # to push chart release and create a release (helm/chart-releaser-action)
       packages: write # needed for ghcr access
