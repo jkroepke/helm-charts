@@ -55,7 +55,7 @@ jobs:
           GPG_KEY_ID: "${{ vars.GPG_KEY_ID }}"
           GPG_KEY: "${{ secrets.GPG_PRIVATE_KEY }}"
           GPG_PASSPHRASE: "${{ secrets.GPG_PASSPHRASE }}"
-          GPG_PASSPHRASE_FILE: "~/.gnupg/passphrase"
+          GPG_PASSPHRASE_FILE: "${{ runner.temp }}/gpg-passphrase"
           GPG_KEY_PATH: "${{ runner.temp }}/private.key"
 
       - name: Run chart-releaser
@@ -68,7 +68,7 @@ jobs:
           CR_SIGN: true
           CR_KEY: "${{ vars.GPG_KEY_NAME }}"
           CR_KEYRING: "~/.gnupg/secring.gpg"
-          CR_PASSPHRASE_FILE: "~/.gnupg/passphrase"
+          CR_PASSPHRASE_FILE: "${{ runner.temp }}/gpg-passphrase"
 
       # see https://github.com/helm/chart-releaser/issues/183
       - name: Login to GitHub Container Registry
