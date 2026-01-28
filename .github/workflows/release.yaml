@@ -48,8 +48,8 @@ jobs:
           gpg --batch --yes --passphrase-fd 0 --import "$GPG_KEY_PATH" <<< "$GPG_PASSPHRASE"
 
           mkdir "${{ runner.temp }}/.gnupg/"
-          gpg --batch --yes --export "$GPG_KEY_ID" > "~/.gnupg/pubring.gpg"
-          gpg --batch --yes --passphrase-fd 0 --export-secret-keys "$GPG_KEY_ID" > "$~/.gnupg/secring.gpg" <<< "$GPG_PASSPHRASE"
+          gpg --batch --yes --export "$GPG_KEY_ID" >~/.gnupg/pubring.gpg
+          gpg --batch --yes --passphrase-fd 0 --export-secret-keys "$GPG_KEY_ID" >~/.gnupg/secring.gpg <<< "$GPG_PASSPHRASE"
         env:
           GPG_KEY_ID: "${{ vars.GPG_KEY_ID }}"
           GPG_KEY: "${{ secrets.GPG_PRIVATE_KEY }}"
