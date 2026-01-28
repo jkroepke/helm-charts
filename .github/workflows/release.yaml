@@ -50,10 +50,12 @@ jobs:
           mkdir "${{ runner.temp }}/.gnupg/"
           gpg --batch --yes --export "$GPG_KEY_ID" >~/.gnupg/pubring.gpg
           gpg --batch --yes --passphrase-fd 0 --export-secret-keys "$GPG_KEY_ID" >~/.gnupg/secring.gpg <<< "$GPG_PASSPHRASE"
+          cat > $GPG_PASSPHRASE_FILE <<< "$GPG_PASSPHRASE"
         env:
           GPG_KEY_ID: "${{ vars.GPG_KEY_ID }}"
           GPG_KEY: "${{ secrets.GPG_PRIVATE_KEY }}"
           GPG_PASSPHRASE: "${{ secrets.GPG_PASSPHRASE }}"
+          GPG_PASSPHRASE_FILE: "~/.gnupg/passphrase"
           GPG_KEY_PATH: "${{ runner.temp }}/private.key"
 
       - name: Run chart-releaser
@@ -64,8 +66,9 @@ jobs:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
           CR_GENERATE_RELEASE_NOTES: true
           CR_SIGN: true
-          CR_KEY: "Jan-Otto Kröpke"
+          CR_KEY: "${{ vars.GPG_KEY_NAME }}"
           CR_KEYRING: "~/.gnupg/secring.gpg"
+          CR_PASSPHRASE_FILE: "~/.gnupg/passphrase"
 
       # see https://github.com/helm/chart-releaser/issues/183
       - name: Login to GitHub Container Registry
