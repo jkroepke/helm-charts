@@ -2,7 +2,7 @@ apiVersion: v2
 name: values
 description: Pipeline the yaml from the values. Useful to deploy custom resources through Terraform.
 home: https://github.com/jkroepke/helm-charts
-version: 1.0.6
+version: 1.0.7
 maintainers:
   - name: jkroepke
     email: github@jkroepke.de
