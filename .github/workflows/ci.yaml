@@ -108,7 +108,7 @@ jobs:
           VALIDATE_GITLEAKS: true
           VALIDATE_JSON: true
           VALIDATE_MARKDOWN: true
-          VALIDATE_NATURAL_LANGUAGE: false
+          # VALIDATE_NATURAL_LANGUAGE: false
           VALIDATE_PYTHON: true
           VALIDATE_RENOVATE: true
           VALIDATE_SHELL_SHFMT: true
