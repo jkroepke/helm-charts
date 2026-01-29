@@ -21,7 +21,7 @@ A local running gpg agent is mandatory.
 To import the signing key for this repository, please run the following command:
 
 ```console
-curl https://jkroepke.github.io/helm-charts/pubkey.gpg | gpg --import
+curl -sf https://github.com/jkroepke.gpg | gpg --import
 ```
 
 After importing the key, you can use the `--verify` flag during `helm install` to enable chart signature validation.
