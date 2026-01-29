@@ -45,7 +45,7 @@ spec:
             - "service"
           env:
           {{- range $key, $val := .Values.env }}
-            {{- if ne (eq $val "") }}
+            {{- if not (eq (print $val) "") }}
             - name: {{ $key }}
               value: {{ $val | quote  }}
             {{- end }}

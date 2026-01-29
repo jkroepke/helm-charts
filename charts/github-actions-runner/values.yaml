@@ -106,7 +106,7 @@ env:
   # -- Path to use for runner data. It allows avoiding reregistration each the start of the runner. No default value.
   CONFIGURED_ACTIONS_RUNNER_FILES_DIR: /data
   # -- Optional flag to configure runner with --ephemeral option. Ephemeral runners are suitable for autoscaling.
-  #EPHEMERAL: ""
+  # EPHEMERAL: ""
   # -- Optional environment variable to disable auto updates. Auto updates are enabled by default to preserve past behavior. Any value is considered truthy and will disable them.
   DISABLE_AUTO_UPDATE: "false"
   # -- Optional flag which automatically starts the docker service if set to true. Useful when using sysbox. Defaults to false.
