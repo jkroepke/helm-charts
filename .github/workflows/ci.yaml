@@ -12,6 +12,7 @@ jobs:
     runs-on: ubuntu-24.04
     env:
       CT_BUILD_ID: '${{ github.run_id }}'
+      CT_CONFIG: charts/ct.yaml
     permissions:
       contents: read
     steps:
@@ -39,7 +40,7 @@ jobs:
       - name: Run chart-testing (list-changed)
         id: list-changed
         run: |
-          changed="$(ct list-changed --config charts/ct.yaml)"
+          changed="$(ct list-changed)"
           if [[ -n "$changed" ]]; then
             echo "changed=true" >> "$GITHUB_OUTPUT"
             echo "changed_list=\"${changed//$'\n'/ }\"" >> "$GITHUB_OUTPUT"
@@ -50,7 +51,7 @@ jobs:
         run: helm plugin install https://github.com/helm-unittest/helm-unittest.git --version 1.0.3 --verify=false
 
       - name: Run chart-testing (lint)
-        run: ct lint --config charts/ct.yaml
+        run: ct lint
 
       - name: Create kind cluster
         uses: helm/kind-action@92086f6be054225fa813e0a4b13787fc9088faab # v1.13.0
@@ -78,7 +79,7 @@ jobs:
           directory: "charts/${{ steps.list-changed.outputs.changed_list }}"
 
       - name: Run chart-testing (install)
-        run: ct install --debug --config charts/ct.yaml --excluded-charts amazon-eks-pod-identity-webhook,keycloak-config-cli
+        run: ct install --debug --excluded-charts amazon-eks-pod-identity-webhook,keycloak-config-cli
 
   super-linter:
     name: Lint Code Base
