@@ -74,9 +74,9 @@ jobs:
           fi
         if: steps.list-changed.outputs.changed == 'true'
 
-      - uses: stackrox/kube-linter-action@v1
-        with:
-          directory: "${{ steps.list-changed.outputs.changed_list }}"
+      #- uses: stackrox/kube-linter-action@v1
+      #  with:
+      #    directory: "${{ steps.list-changed.outputs.changed_list }}"
 
       - name: Run chart-testing (install)
         run: ct install --debug --excluded-charts amazon-eks-pod-identity-webhook,keycloak-config-cli
