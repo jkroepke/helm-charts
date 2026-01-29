@@ -73,6 +73,10 @@ jobs:
           fi
         if: steps.list-changed.outputs.changed == 'true'
 
+      - uses: stackrox/kube-linter-action@v1
+        with:
+          directory: "charts/${{ steps.list-changed.outputs.changed_list }}"
+
       - name: Run chart-testing (install)
         run: ct install --debug --config charts/ct.yaml --excluded-charts amazon-eks-pod-identity-webhook,keycloak-config-cli
 
@@ -108,14 +112,3 @@ jobs:
           VALIDATE_RENOVATE: true # does not support newest renovate config
           VALIDATE_SHELL_SHFMT: true
           VALIDATE_XML: true
-
-  kube-lint:
-    name: Lint Code Base
-    runs-on: ubuntu-24.04
-    permissions:
-      contents: read
-    steps:
-    - uses: stackrox/kube-linter-action@v1
-      with:
-        directory: charts/
-        config: .kube-linter.yaml
