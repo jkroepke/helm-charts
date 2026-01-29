@@ -62,7 +62,7 @@ config:
     # -- Enabled pod-identity-webhook ConfigMap. See https://github.com/aws/amazon-eks-pod-identity-webhook#pod-identity-webhook-configmap
     enabled: false
     # -- Name pod-identity-webhook ConfigMap. Changing this value is not supported.
-    ## Names are hard-coded
+    ## Names are hardcoded
     ## ref: https://github.com/aws/amazon-eks-pod-identity-webhook/blob/0d254eee1537e0745679252ca60f020fa1a461f0/pkg/cache/cache.go#L259-L262
     name: "pod-identity-webhook"
     # -- Content of pod-identity-webhook configmap. Values support templating.
@@ -182,11 +182,11 @@ securityContext:
   allowPrivilegeEscalation: false
   # -- Container securityContext: Enable read-only root filesystem
   readOnlyRootFilesystem: true
-  # -- Container securityContext: Run primary group id
+  # -- Container securityContext: Run primary group ID
   runAsGroup: 1
   # -- Container securityContext: Disable root user
   runAsNonRoot: false
-  # -- Container securityContext: Run user id
+  # -- Container securityContext: Run user ID
   runAsUser: 65534
   # -- Container securityContext: Drop capabilities
   capabilities:
