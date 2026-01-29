@@ -1,6 +1,6 @@
 # amazon-eks-pod-identity-webhook
 
-![Version: 2.5.0](https://img.shields.io/badge/Version-2.5.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v0.6.4](https://img.shields.io/badge/AppVersion-v0.6.4-informational?style=flat-square)
+![Version: 2.6.0](https://img.shields.io/badge/Version-2.6.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v0.6.12](https://img.shields.io/badge/AppVersion-v0.6.12-informational?style=flat-square)
 
 A Kubernetes webhook for pods that need AWS IAM access
 
@@ -33,7 +33,7 @@ helm install amazon-eks-pod-identity-webhook jkroepke/amazon-eks-pod-identity-we
 | config.annotationPrefix | string | `"eks.amazonaws.com"` | The Service Account annotation to look for (default "eks.amazonaws.com") |
 | config.defaultAwsRegion | string | `"us-east-1"` | If set, AWS_DEFAULT_REGION and AWS_REGION will be set to this value in mutated containers |
 | config.extraArgs | list | `[]` | Additional command line arguments to pass to amazon-eks-pod-identity-webhook |
-| config.podIdentityWebhookMap.data | object | `{}` | Content of pod-identity-webhook configmap |
+| config.podIdentityWebhookMap.data | object | `{}` | Content of pod-identity-webhook configmap. Values support templating. |
 | config.podIdentityWebhookMap.enabled | bool | `false` | Enabled pod-identity-webhook ConfigMap. See https://github.com/aws/amazon-eks-pod-identity-webhook#pod-identity-webhook-configmap |
 | config.podIdentityWebhookMap.name | string | `"pod-identity-webhook"` | Name pod-identity-webhook ConfigMap. Changing this value is not supported. # Names are hard-coded # ref: https://github.com/aws/amazon-eks-pod-identity-webhook/blob/0d254eee1537e0745679252ca60f020fa1a461f0/pkg/cache/cache.go#L259-L262 |
 | config.ports.metrics | int | `9999` | Port to listen on for metrics and healthz (http) |
@@ -51,8 +51,10 @@ helm install amazon-eks-pod-identity-webhook jkroepke/amazon-eks-pod-identity-we
 | imagePullSecrets | list | `[]` | registry secret names as an array |
 | livenessProbe.httpGet.path | string | `"/healthz"` | This is the liveness check endpoint |
 | livenessProbe.httpGet.port | string | `"https"` |  |
+| livenessProbe.httpGet.scheme | string | `"HTTPS"` |  |
 | metrics.serviceMonitor.additionalLabels | object | `{}` | Used to pass Labels that are required by the installed Prometheus Operator |
 | metrics.serviceMonitor.enabled | bool | `false` | Create serviceMonitor Resource for scraping metrics using PrometheusOperator |
+| metrics.serviceMonitor.endpointAdditionalProperties | object | `{}` | More properties for the endpoint configuration of the service monitor. |
 | metrics.serviceMonitor.honorLabels | bool | `false` | honorLabels chooses the metric's labels on collisions with target labels |
 | metrics.serviceMonitor.interval | string | `"30s"` | Specify the interval at which metrics should be scraped |
 | metrics.serviceMonitor.namespace | string | `""` | Specify the namespace in which the serviceMonitor resource will be created |
@@ -61,8 +63,8 @@ helm install amazon-eks-pod-identity-webhook jkroepke/amazon-eks-pod-identity-we
 | mutatingWebhook.annotations | object | `{}` | Annotations for amazon-eks-pod-identity-webhook mutating webhook |
 | mutatingWebhook.failurePolicy | string | `"Ignore"` | FailurePolicy of the amazon-eks-pod-identity-webhook mutating webhook. Fail or Ignore are allowed. # ref: https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/#failure-policy |
 | mutatingWebhook.namespaceSelector | object | `{}` | namespaceSelector for the mutating webhook to include or exclude namespace. |
-| mutatingWebhook.objectSelector.matchExpressions | object | `{}` | Allows selecting objects (pods) based on flexible matching rules for specific labels and fields. |
-| mutatingWebhook.objectSelector.matchLabels | list | `[]` | In the MutatingWebhook, matchLabels selects objects (pods) based on specific labels matching exactly. |
+| mutatingWebhook.objectSelector.matchExpressions | list | `[]` | Allows selecting objects (pods) based on flexible matching rules for specific labels and fields. |
+| mutatingWebhook.objectSelector.matchLabels | object | `{}` | In the MutatingWebhook, matchLabels selects objects (pods) based on specific labels matching exactly. |
 | nameOverride | string | `""` | String to partially override amazon-eks-pod-identity-webhook.fullname template (will maintain the release name) |
 | namespaceOverride | string | `""` | String to partially override amazon-eks-pod-identity-webhook.fullname template (will maintain the release name) |
 | nodeSelector | object | `{}` | Node labels for pod assignment. Evaluated as a template. |
@@ -79,18 +81,22 @@ helm install amazon-eks-pod-identity-webhook jkroepke/amazon-eks-pod-identity-we
 | podAnnotations | object | `{}` | Annotations for amazon-eks-pod-identity-webhook pods |
 | podDisruptionBudget | object | `{"enabled":false,"maxUnavailable":null,"minAvailable":null}` | https://kubernetes.io/docs/tasks/run-application/configure-pdb/ |
 | podLabels | object | `{}` | Additional labels for amazon-eks-pod-identity-webhook pods |
-| podSecurityContext | object | `{}` | amazon-eks-pod-identity-webhook pods' Security Context. |
+| podSecurityContext.seccompProfile | object | `{"type":"RuntimeDefault"}` | Pod securityContext: Seccomp profile |
 | priorityClassName | string | `""` | PriorityClass applied to deployment |
 | readinessProbe.httpGet.path | string | `"/healthz"` | This is the readiness check endpoint |
 | readinessProbe.httpGet.port | string | `"https"` |  |
+| readinessProbe.httpGet.scheme | string | `"HTTPS"` |  |
 | replicaCount | int | `1` | Number of amazon-eks-pod-identity-webhook replicas to deploy |
 | resources.limits | object | `{}` | The resources limits for the amazon-eks-pod-identity-webhook container # Example: # limits: #    cpu: 100m #    memory: 128Mi |
 | resources.requests | object | `{}` | The requested resources for the amazon-eks-pod-identity-webhook container # Examples: # requests: #    cpu: 100m #    memory: 128Mi |
-| securityContext.readOnlyRootFilesystem | bool | `true` | Pod securityContext: Enable read-only root filesystem |
-| securityContext.runAsGroup | int | `1` | Pod securityContext: Run primary group id |
-| securityContext.runAsNonRoot | bool | `false` | Pod securityContext: Disable root user |
-| securityContext.runAsUser | int | `65534` | Pod securityContext: Run user id |
+| securityContext.allowPrivilegeEscalation | bool | `false` | Container securityContext: Allow privilege escalation |
+| securityContext.capabilities | object | `{"drop":["ALL"]}` | Container securityContext: Drop capabilities |
+| securityContext.readOnlyRootFilesystem | bool | `true` | Container securityContext: Enable read-only root filesystem |
+| securityContext.runAsGroup | int | `1` | Container securityContext: Run primary group id |
+| securityContext.runAsNonRoot | bool | `false` | Container securityContext: Disable root user |
+| securityContext.runAsUser | int | `65534` | Container securityContext: Run user id |
 | service.annotations | object | `{}` | Service annotations |
+| service.labels | object | `{}` | Service labels. |
 | service.type | string | `"ClusterIP"` | Service type |
 | serviceAccount.annotations | object | `{}` | Annotations for service account. Evaluated as a template. |
 | serviceAccount.create | bool | `true` | Enable creation of ServiceAccount for nginx pod |
