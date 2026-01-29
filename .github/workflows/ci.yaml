@@ -76,7 +76,7 @@ jobs:
 
       - uses: stackrox/kube-linter-action@v1
         with:
-          directory: "charts/${{ steps.list-changed.outputs.changed_list }}"
+          directory: "${{ steps.list-changed.outputs.changed_list }}"
 
       - name: Run chart-testing (install)
         run: ct install --debug --excluded-charts amazon-eks-pod-identity-webhook,keycloak-config-cli
