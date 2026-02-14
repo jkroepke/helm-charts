@@ -87,6 +87,10 @@ jobs:
               break
             fi
 
+            helm push "${pkg}" "oci://ghcr.io/${GITHUB_REPOSITORY_OWNER}/charts"
+
+            exit 0
+
             if ! PUSH_STDOUT=$(helm push "${pkg}" "oci://ghcr.io/${GITHUB_REPOSITORY_OWNER}/charts" 2>&1); then
               echo $PUSH_STDOUT
 
@@ -99,7 +103,7 @@ jobs:
 
             CHART_NAME="$(echo "${pkg##*/}" | cut -d- -f 1)"
 
-            echo "Annnotating image tag $TAG with OCI labels"
+            echo "Annotating image tag $TAG with OCI labels"
 
             docker buildx imagetools create \
               --annotation "index:org.opencontainers.image.authors=Jan-Otto Kröpke" \
@@ -110,5 +114,6 @@ jobs:
               --annotation "index:org.opencontainers.image.version=${CHART_NAME}-$(echo $TAG | cut -d: -f2-)" \
               --annotation "index:org.opencontainers.image.revision=$(git rev-parse HEAD)" \
               --annotation "index:org.opencontainers.image.title=${CHART_NAME}" \
+              --append
               --tag "$TAG"
           done
