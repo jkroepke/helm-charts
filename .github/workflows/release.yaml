@@ -91,17 +91,18 @@ jobs:
             echo $PUSH_STDOUT
             TAG="$(echo "$PUSH_STDOUT" | head -n 1 | cut -d: -f2- | tr -d ' ')"
 
+            CHART_NAME="$(echo "${pkg##*/}" | cut -d- -f 1)"
+
             echo Annnotating image with OCI labels
 
             echo docker buildx imagetools create \
               --annotation "index:org.opencontainers.image.authors=Jan-Otto Kröpke" \
               --annotation "index:org.opencontainers.image.created=$(date -u +"%Y-%m-%dT%H:%M:%SZ")" \
-              --annotation "index:org.opencontainers.image.description=Amazon EKS Pod Identity Webhook" \
               --annotation "index:org.opencontainers.image.licenses=Apache-2.0" \
               --annotation "index:org.opencontainers.image.url=https://github.com/${GITHUB_REPOSITORY_OWNER}/helm-charts" \
               --annotation "index:org.opencontainers.image.source=https://github.com/${GITHUB_REPOSITORY_OWNER}/helm-charts" \
-              --annotation "index:org.opencontainers.image.version=$(echo $TAG | cut -d: -f2-)" \
+              --annotation "index:org.opencontainers.image.version=${CHART_NAME}-$(echo $TAG | cut -d: -f2-)" \
               --annotation "index:org.opencontainers.image.revision=$(git rev-parse HEAD)" \
-              --annotation "index:org.opencontainers.image.title=$(echo "${pkg##*/}" | cut -d- -f 1)" \
+              --annotation "index:org.opencontainers.image.title=${CHART_NAME}" \
               --tag "$TAG"
           done
