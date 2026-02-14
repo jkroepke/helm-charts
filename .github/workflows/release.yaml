@@ -79,6 +79,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Push charts to GHCR
+        #language=bash
         run: |
           shopt -s nullglob
           for pkg in .cr-release-packages/*.tgz; do
@@ -88,9 +89,11 @@ jobs:
 
             PUSH_STDOUT=$(helm push "${pkg}" "oci://ghcr.io/${GITHUB_REPOSITORY_OWNER}/charts")
             echo $PUSH_STDOUT
-            TAG=$(echo "$PUSH_STDOUT" | head -n 1 | cut -d: -f2- | tr -d ' ')
+            TAG="$(echo "$PUSH_STDOUT" | head -n 1 | cut -d: -f2- | tr -d ' ')"
 
-            docker buildx imagetools create \
+            echo Annnotating image with OCI labels
+
+            echo docker buildx imagetools create \
               --annotation "index:org.opencontainers.image.authors=Jan-Otto Kröpke" \
               --annotation "index:org.opencontainers.image.created=$(date -u +"%Y-%m-%dT%H:%M:%SZ")" \
               --annotation "index:org.opencontainers.image.description=Amazon EKS Pod Identity Webhook" \
@@ -100,5 +103,5 @@ jobs:
               --annotation "index:org.opencontainers.image.version=$(echo $TAG | cut -d: -f2-)" \
               --annotation "index:org.opencontainers.image.revision=$(git rev-parse HEAD)" \
               --annotation "index:org.opencontainers.image.title=$(echo "${pkg##*/}" | cut -d- -f 1)" \
-              --tag $TAG
+              --tag "$TAG"
           done
