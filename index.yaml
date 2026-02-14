@@ -1223,6 +1223,26 @@ entries:
     version: 1.0.0
   values:
   - apiVersion: v2
+    created: "2026-02-14T15:43:05.379598977Z"
+    description: Pipeline the yaml from the values. Useful to deploy custom resources
+      through Terraform.
+    digest: 7ea2d1a822205bd58f6fd8588e16e83c9f2955189a68731d8020da324f9e6921
+    home: https://github.com/jkroepke/helm-charts
+    keywords:
+    - helm
+    - value
+    - values
+    maintainers:
+    - email: github@jkroepke.de
+      name: jkroepke
+      url: https://github.com/jkroepke
+    name: values
+    sources:
+    - https://github.com/jkroepke/helm-charts
+    urls:
+    - https://github.com/jkroepke/helm-charts/releases/download/values-1.0.10/values-1.0.10.tgz
+    version: 1.0.10
+  - apiVersion: v2
     created: "2026-02-14T15:40:44.254580402Z"
     description: Pipeline the yaml from the values. Useful to deploy custom resources
       through Terraform.
@@ -1421,4 +1441,4 @@ entries:
     urls:
     - https://github.com/jkroepke/helm-charts/releases/download/values-1.0.0/values-1.0.0.tgz
     version: 1.0.0
-generated: "2026-02-14T15:40:44.254730953Z"
+generated: "2026-02-14T15:43:05.379757332Z"
