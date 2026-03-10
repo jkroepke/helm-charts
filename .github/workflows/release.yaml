@@ -72,7 +72,7 @@ jobs:
 
       # see https://github.com/helm/chart-releaser/issues/183
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3.7.0
+        uses: docker/login-action@b45d80f862d83dbcd57f89517bcf500b2ab88fb2 # v4.0.0
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -86,34 +86,5 @@ jobs:
             if [ -z "${pkg:-}" ]; then
               break
             fi
-
-            helm push "${pkg}" "oci://ghcr.io/${GITHUB_REPOSITORY_OWNER}/charts"
-
-            exit 0
-
-            if ! PUSH_STDOUT=$(helm push "${pkg}" "oci://ghcr.io/${GITHUB_REPOSITORY_OWNER}/charts" 2>&1); then
-              echo $PUSH_STDOUT
-
-              echo "Failed to push ${pkg}"
-              exit 1
-            fi
-
-            echo $PUSH_STDOUT
-            TAG="$(echo "$PUSH_STDOUT" | head -n 1 | cut -d: -f2- | tr -d ' ')"
-
-            CHART_NAME="$(echo "${pkg##*/}" | cut -d- -f 1)"
-
-            echo "Annotating image tag $TAG with OCI labels"
-
-            docker buildx imagetools create \
-              --annotation "index:org.opencontainers.image.authors=Jan-Otto Kröpke" \
-              --annotation "index:org.opencontainers.image.created=$(date -u +"%Y-%m-%dT%H:%M:%SZ")" \
-              --annotation "index:org.opencontainers.image.licenses=Apache-2.0" \
-              --annotation "index:org.opencontainers.image.url=https://github.com/${GITHUB_REPOSITORY_OWNER}/helm-charts" \
-              --annotation "index:org.opencontainers.image.source=https://github.com/${GITHUB_REPOSITORY_OWNER}/helm-charts" \
-              --annotation "index:org.opencontainers.image.version=${CHART_NAME}-$(echo $TAG | cut -d: -f2-)" \
-              --annotation "index:org.opencontainers.image.revision=$(git rev-parse HEAD)" \
-              --annotation "index:org.opencontainers.image.title=${CHART_NAME}" \
-              --append
-              --tag "$TAG"
+            helm push "${pkg}" "oci://ghcr.io/${GITHUB_REPOSITORY_OWNER}/helm-charts"
           done
