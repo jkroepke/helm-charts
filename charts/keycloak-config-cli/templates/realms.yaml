@@ -4,6 +4,7 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: {{ template "keycloak-config-cli.fullname" . }}-config-realms
+  namespace: {{ .Release.Namespace }}
   labels:
   {{- include "keycloak-config-cli.labels" . | nindent 4 }}
 data:
