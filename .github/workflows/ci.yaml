@@ -96,8 +96,8 @@ jobs:
         uses: super-linter/super-linter/slim@9e863354e3ff62e0727d37183162c4a88873df41 # v8.6.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          LINTER_RULES_PATH: .github/linters
           MULTI_STATUS: false
+          LINTER_RULES_PATH: .github/linters
           ENABLE_GITHUB_ACTIONS_STEP_SUMMARY: true
           ENABLE_GITHUB_PULL_REQUEST_SUMMARY_COMMENT: false
           SAVE_SUPER_LINTER_SUMMARY: true
@@ -107,7 +107,7 @@ jobs:
           VALIDATE_EDITORCONFIG: true
           VALIDATE_ENV: true
           VALIDATE_GITHUB_ACTIONS: true
-          # VALIDATE_GITHUB_ACTIONS_ZIZMOR: true
+          VALIDATE_GITHUB_ACTIONS_ZIZMOR: true
           VALIDATE_GITLEAKS: true
           VALIDATE_HTML: true
           VALIDATE_JSON: true
@@ -115,5 +115,6 @@ jobs:
           # VALIDATE_MARKDOWN: true - disable to for now.
           VALIDATE_RENOVATE: true
           VALIDATE_SHELL_SHFMT: true
+          VALIDATE_SPELL_CODESPELL: true
           # VALIDATE_XML: true
           # VALIDATE_YAML: true
