@@ -83,7 +83,9 @@ jobs:
               --reset-values \
               --suppress-output-line-regex="helm.sh/chart:" \
               --suppress-output-line-regex="chart:" \
-              --suppress-output-line-regex="app.kubernetes.io/version:"
+              --suppress-output-line-regex="app.kubernetes.io/version:" | tee /dev/stderr;
+              printf '\n```';
+            } > $GITHUB_STEP_SUMMARY
           done
         env:
           CHANGED_LIST: ${{ steps.list-changed.outputs.changed_list }}
