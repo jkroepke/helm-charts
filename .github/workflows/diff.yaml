@@ -8,7 +8,7 @@ on:
 
 jobs:
   generate-jobs:
-    name: check diff
+    name: generate-jobs
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -32,6 +32,7 @@ jobs:
       - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
           python-version: '3.14'
+          cache: false
 
       - name: Set up chart-testing
         uses: helm/chart-testing-action@6ec842c01de15ebb84c8627d2744a0c2f2755c9f # v2.8.0
@@ -41,6 +42,7 @@ jobs:
 
       - name: Run chart-testing (list-changed)
         id: list-changed
+        #language=bash
         run: |
           # get changed charts (one per line)
           changed=$(ct list-changed --config charts/ct.yaml)
@@ -95,7 +97,7 @@ jobs:
       # separate matrix job below.
 
   diff:
-    name: per-values-file diff
+    name: diff
     needs: generate-jobs
     runs-on: ubuntu-latest
     if: needs.generate-jobs.outputs.changed == 'true'
@@ -132,15 +134,18 @@ jobs:
         run: kubectl apply -k https://github.com/kubernetes-sigs/gateway-api/config/crd
 
       - name: Run diff for value file
+        env:
+          valuefile: "${{ matrix.valuefile }}"
         #language=bash
         run: |
-          vf="${{ matrix.valuefile }}"
-          echo "Running diff for value file: $vf"
+
+          echo "Running diff for value file: $valuefile"
           # extract chart name from path like charts/<chart>/ci/<file>
-          chart=$(echo "$vf" | sed -E 's#^.*/charts/([^/]+)/.*$#\1#')
+          # dirname twice: charts/<chart>/ci -> charts/<chart>, basename -> <chart>
+          chart=$(basename "$(dirname "$(dirname "$valuefile")")")
 
           # install current target chart into cluster so helm diff has a baseline
-          helm upgrade -i "$chart" "./target/charts/$chart" --create-namespace --namespace "$chart" --wait || true
+          helm upgrade -i "$chart" "./target/charts/$chart" --create-namespace --namespace "$chart" --wait
 
           {
             printf '```diff\n'
