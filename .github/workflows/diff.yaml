@@ -7,13 +7,15 @@ on:
       - main
 
 jobs:
-  diff:
+  generate-jobs:
     name: check diff
     runs-on: ubuntu-latest
     permissions:
       contents: read
     outputs:
       changed: ${{ steps.list-changed.outputs.changed }}
+      changed_list: ${{ steps.list-changed.outputs.changed_list }}
+      values_files_json: ${{ steps.list-changed.outputs.values_files_json }}
     steps:
       - name: Checkout Code
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -40,22 +42,86 @@ jobs:
       - name: Run chart-testing (list-changed)
         id: list-changed
         run: |
+          # get changed charts (one per line)
           changed=$(ct list-changed --config charts/ct.yaml)
-          if [[ -n "$changed" ]]; then
-            echo "changed=true" >> "$GITHUB_OUTPUT"
-            echo "changed_list=\"${changed//$'\n'/ }\"" >> "$GITHUB_OUTPUT"
+
+          # normalize and count changed charts
+          changed_trimmed=$(echo "$changed" | sed '/^\s*$/d')
+          num_changed=$(echo "$changed_trimmed" | sed '/^\s*$/d' | wc -l | tr -d ' ')
+
+          if [[ -z "$changed_trimmed" ]]; then
+            # nothing changed
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "changed_list=" >> "$GITHUB_OUTPUT"
+            echo "values_files_json=[]" >> "$GITHUB_OUTPUT"
+            exit 0
           fi
 
-      - name: install helm unittest plugin
-        if: steps.list-changed.outputs.changed == 'true'
+          if [ "$num_changed" -gt 1 ]; then
+            echo "More than one chart changed (count=$num_changed). Failing."
+            echo "$changed_trimmed"
+            exit 1
+          fi
+
+          # single chart changed: compute ci/*-values.yaml files for that chart
+          chart_path=$(echo "$changed_trimmed" | head -n1 | tr -d '"')
+          # extract chart name (basename)
+          chart_name=$(basename "$chart_path")
+
+          values_json="[]"
+          # look for ci/*-values.yaml under the chart directory
+          files=("charts/$chart_name/ci"/*-values.yaml)
+          if [ -e "${files[0]}" ]; then
+            values_json="["
+            sep=""
+            for f in "${files[@]}"; do
+              # ensure we only include files (not literal glob when no match)
+              if [ -f "$f" ]; then
+                # make path relative to workspace root
+                relpath="$f"
+                values_json+="$sep\"$relpath\""
+                sep=","
+              fi
+            done
+            values_json+"]"
+          fi
+
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+          echo "changed_list=\"$chart_path\"" >> "$GITHUB_OUTPUT"
+          echo "values_files_json=$values_json" >> "$GITHUB_OUTPUT"
+
+      # The following steps are only used to detect changes and produce the
+      # list of values files. The per-values-file diff runs are executed in a
+      # separate matrix job below.
+
+  diff:
+    name: per-values-file diff
+    needs: generate-jobs
+    runs-on: ubuntu-latest
+    if: needs.generate-jobs.outputs.changed == 'true'
+    strategy:
+      matrix:
+        valuefile: ${{ fromJson(needs.generate-jobs.outputs.values_files_json) }}
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Set up Helm
+        uses: azure/setup-helm@dda3372f752e03dde6b3237bc9431cdc2f7a02a2 # v5.0.0
+        with:
+          # renovate: github=helm/helm
+          version: v4.1.3
+
+      - name: install helm diff plugin
         run: helm plugin install https://github.com/databus23/helm-diff --version 3.15.4 --verify=false
 
       - name: Create kind cluster
-        if: steps.list-changed.outputs.changed == 'true'
         uses: helm/kind-action@ef37e7f390d99f746eb8b610417061a60e82a6cc # v1.14.0
 
       - name: Checkout Target of PR
-        if: steps.list-changed.outputs.changed == 'true'
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           path: target
@@ -63,33 +129,31 @@ jobs:
           persist-credentials: false
 
       - name: Apply Gateway API CRDs
-        if: steps.list-changed.outputs.changed == 'true'
         run: kubectl apply -k https://github.com/kubernetes-sigs/gateway-api/config/crd
 
-      - name: Run chart-testing (diff)
-        if: steps.list-changed.outputs.changed == 'true'
+      - name: Run diff for value file
         #language=bash
         run: |
-          # shellcheck disable=SC2086,SC2116
-          CHANGED_LIST=$(echo $CHANGED_LIST)
-          for chart in $CHANGED_LIST; do
-            chart="${chart//\"}"
-            chart="${chart##*/}"
-            helm upgrade -i "$chart" "./target/charts/$chart" --create-namespace --namespace "$chart" --wait
-            {
-              printf '```diff\n';
-              helm diff upgrade "$chart" "./charts/$chart" \
-                --namespace "$chart" \
-                --suppress=CustomResourceDefinition \
-                --normalize-manifests \
-                --reset-values \
-                --no-color \
-                -C 5 \
-                --suppress-output-line-regex="helm.sh/chart:" \
-                --suppress-output-line-regex="chart:" \
-                --suppress-output-line-regex="app.kubernetes.io/version:" | tee /dev/stderr;
-              printf '\n```';
-            } > $GITHUB_STEP_SUMMARY
-          done
-        env:
-          CHANGED_LIST: ${{ steps.list-changed.outputs.changed_list }}
+          vf="${{ matrix.valuefile }}"
+          echo "Running diff for value file: $vf"
+          # extract chart name from path like charts/<chart>/ci/<file>
+          chart=$(echo "$vf" | sed -E 's#^.*/charts/([^/]+)/.*$#\1#')
+
+          # install current target chart into cluster so helm diff has a baseline
+          helm upgrade -i "$chart" "./target/charts/$chart" --create-namespace --namespace "$chart" --wait || true
+
+          {
+            printf '```diff\n'
+            helm diff upgrade "$chart" "./charts/$chart" \
+              --namespace "$chart" \
+              --suppress=CustomResourceDefinition \
+              --normalize-manifests \
+              --reset-values \
+              --no-color \
+              -C 5 \
+              --suppress-output-line-regex="helm.sh/chart:" \
+              --suppress-output-line-regex="chart:" \
+              --suppress-output-line-regex="app.kubernetes.io/version:" \
+              --values "$vf" | tee /dev/stderr
+            printf '\n```'
+          } > $GITHUB_STEP_SUMMARY
