@@ -134,17 +134,21 @@ jobs:
 
       - name: Run diff for value file
         env:
-          valuefile: "${{ matrix.valuefile }}"
+          value_file: "${{ matrix.valuefile }}"
         #language=bash
         run: |
 
-          echo "Running diff for value file: $valuefile"
+          echo "Running diff for value file: $value_file"
           # extract chart name from path like charts/<chart>/ci/<file>
           # dirname twice: charts/<chart>/ci -> charts/<chart>, basename -> <chart>
-          chart=$(basename "$(dirname "$(dirname "$valuefile")")")
+          chart=$(basename "$(dirname "$(dirname "$value_file")")")
 
           # install current target chart into cluster so helm diff has a baseline
-          helm upgrade -i "$chart" "./target/charts/$chart" --create-namespace --namespace "$chart" --wait
+          helm upgrade -i "$chart" "./target/charts/$chart" \
+            --create-namespace \
+            --namespace "$chart" \
+            --wait \
+            --values "$value_file"
 
           {
             printf '```diff\n'
@@ -158,6 +162,6 @@ jobs:
               --suppress-output-line-regex="helm.sh/chart:" \
               --suppress-output-line-regex="chart:" \
               --suppress-output-line-regex="app.kubernetes.io/version:" \
-              --values "$vf" | tee /dev/stderr
+              --values "$value_file" | tee /dev/stderr
             printf '\n```'
           } > $GITHUB_STEP_SUMMARY
