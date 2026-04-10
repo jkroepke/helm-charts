@@ -83,7 +83,7 @@ jobs:
                 sep=","
               fi
             done
-            values_json+"]"
+            values_json+="]"
           fi
 
           echo "changed=true" >> "$GITHUB_OUTPUT"
