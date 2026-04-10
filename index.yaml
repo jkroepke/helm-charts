@@ -805,6 +805,18 @@ entries:
   example:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2026-04-10T22:35:17.110905218Z"
+    description: A Helm chart for Kubernetes
+    digest: 7814f7956b5114ad7689e1cd3f006000ba12cbaa276f983b7c45ce968aaaf97b
+    maintainers:
+    - name: jkroepke
+    name: example
+    type: application
+    urls:
+    - https://github.com/jkroepke/helm-charts/releases/download/example-0.1.1/example-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2023-03-02T21:24:02.860976123Z"
     description: A Helm chart for Kubernetes
     digest: acc3fe1ae49bddc9258abdf0ed66cdfc0e0fff12e2b0d96f6d63419c5892c3f6
@@ -1561,4 +1573,4 @@ entries:
     urls:
     - https://github.com/jkroepke/helm-charts/releases/download/values-1.0.0/values-1.0.0.tgz
     version: 1.0.0
-generated: "2026-03-27T02:03:38.724552982Z"
+generated: "2026-04-10T22:35:17.111032825Z"
