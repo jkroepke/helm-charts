@@ -43,6 +43,7 @@ jobs:
         id: list-changed
         #language=bash
         run: |
+          set -euo pipefail
           # get changed charts (one per line)
           changed=$(ct list-changed --config charts/ct.yaml)
 
@@ -52,9 +53,11 @@ jobs:
 
           if [[ -z "$changed_trimmed" ]]; then
             # nothing changed
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-            echo "changed_list=" >> "$GITHUB_OUTPUT"
-            echo "values_files_json=[]" >> "$GITHUB_OUTPUT"
+            {
+              echo "changed=false"
+              echo "changed_list="
+              echo "values_files_json=[]"
+            } >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
@@ -71,12 +74,14 @@ jobs:
 
           values_json="[]"
           # look for ci/*-values.yaml under the chart directory
-          files=("charts/$chart_name/ci"/*-values.yaml)
-          if [ -e "${files[0]}" ]; then
+          # enable nullglob so the glob expands to empty array when no match
+          shopt -s nullglob
+          files=(charts/"$chart_name"/ci/*-values.yaml)
+          if [ ${#files[@]} -gt 0 ]; then
             values_json="["
             sep=""
             for f in "${files[@]}"; do
-              # ensure we only include files (not literal glob when no match)
+              # ensure we only include files
               if [ -f "$f" ]; then
                 # make path relative to workspace root
                 relpath="$f"
@@ -86,10 +91,13 @@ jobs:
             done
             values_json+="]"
           fi
+          shopt -u nullglob
 
-          echo "changed=true" >> "$GITHUB_OUTPUT"
-          echo "changed_list=\"$chart_path\"" >> "$GITHUB_OUTPUT"
-          echo "values_files_json=$values_json" >> "$GITHUB_OUTPUT"
+          {
+            echo "changed=true"
+            echo "changed_list=\"$chart_path\""
+            echo "values_files_json=$values_json"
+          } >> "$GITHUB_OUTPUT"
 
       # The following steps are only used to detect changes and produce the
       # list of values files. The per-values-file diff runs are executed in a
@@ -137,11 +145,13 @@ jobs:
           value_file: "${{ matrix.valuefile }}"
         #language=bash
         run: |
+          set -euo pipefail
+          IFS=$'\n\t'
 
           echo "Running diff for value file: $value_file"
           # extract chart name from path like charts/<chart>/ci/<file>
           # dirname twice: charts/<chart>/ci -> charts/<chart>, basename -> <chart>
-          chart=$(basename "$(dirname "$(dirname "$value_file")")")
+          chart="$(basename "$(dirname "$(dirname "$value_file")")")"
 
           # install current target chart into cluster so helm diff has a baseline
           helm upgrade -i "$chart" "./target/charts/$chart" \
@@ -164,4 +174,4 @@ jobs:
               --suppress-output-line-regex="app.kubernetes.io/version:" \
               --values "$value_file" | tee /dev/stderr
             printf '\n```'
-          } > $GITHUB_STEP_SUMMARY
+          } > "$GITHUB_STEP_SUMMARY"
