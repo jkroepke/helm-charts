@@ -49,7 +49,17 @@ jobs:
 
       - name: install helm unittest plugin
         if: steps.list-changed.outputs.changed == 'true'
-        run: helm plugin install https://github.com/helm-unittest/helm-unittest.git --version 1.0.3 --verify=false
+        run: helm plugin install https://github.com/helm-unittest/helm-unittest.git --version "${VERSION}" --verify=false
+        env:
+          # renovate: github=helm-unittest/helm-unittest
+          VERSION: 1.1.1
+
+      - name: install helm values-schema plugin
+        if: steps.list-changed.outputs.changed == 'true'
+        run: helm plugin install https://github.com/losisin/helm-values-schema-json.git --version "${VERSION}" --verify=false
+        env:
+          # renovate: github=losisin/helm-values-schema-json
+          VERSION: 2.5.0
 
       - name: Run chart-testing (lint)
         run: ct lint
@@ -63,21 +73,8 @@ jobs:
         if: steps.list-changed.outputs.changed == 'true'
 
       - name: Apply Prometheus Operator CRDs (unless for charts already installing it)
-        env:
-          CHANGED_LIST: ${{ steps.list-changed.outputs.changed_list }}
-        run: |
-          # Always run unless only changed chart is one of impacted charts
-          echo "List is: $CHANGED_LIST"
-          if [ "$CHANGED_LIST" = '"charts/kube-prometheus-stack"' ] || [ "$CHANGED_LIST" = '"charts/prometheus-operator-crds"' ]; then
-            echo "Skipping install"
-          else
-            helm install prometheus-operator-crds oci://ghcr.io/prometheus-community/charts/prometheus-operator-crds
-          fi
+        run: helm install prometheus-operator-crds oci://ghcr.io/prometheus-community/charts/prometheus-operator-crds
         if: steps.list-changed.outputs.changed == 'true'
-
-      #- uses: stackrox/kube-linter-action@v1
-      #  with:
-      #    directory: "${{ steps.list-changed.outputs.changed_list }}"
 
       - name: Run chart-testing (install)
         run: ct install --debug --excluded-charts amazon-eks-pod-identity-webhook,keycloak-config-cli

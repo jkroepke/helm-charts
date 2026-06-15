@@ -1,7 +1,16 @@
 remote: origin
 target-branch: main
-chart-repos: jetstack=https://charts.jetstack.io
+chart-dirs:
+  - charts
+chart-repos:
+  - jetstack=https://charts.jetstack.io
+additional-commands:
+  - sh -ec "if [ -f '{{ .Path }}/ci/lint.sh' ]; then bash '{{ .Path }}/ci/lint.sh'; fi"
+  - helm unittest --strict --file 'tests/**/*.yaml' {{ .Path }}
 check-version-increment: true
+github-groups: true
+helm-extra-args: --timeout 600s
+use-helmignore: true
 validate-maintainers: true
 validate-chart-schema: true
 validate-yaml: true
