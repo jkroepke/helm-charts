@@ -47,5 +47,4 @@ See the [changelog](https://jkroepke.github.io/helm-charts/changelog/?chart=amaz
 
 ## Values
 
-
 See the [values docs](https://jkroepke.github.io/helm-charts/docs/?chart=amazon-eks-pod-identity-webhook).
