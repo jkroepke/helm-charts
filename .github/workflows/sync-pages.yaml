@@ -43,6 +43,6 @@ jobs:
 
           git config user.name "$GITHUB_ACTOR"
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
-          git add README.md changelog/index.html
+          git add README.md changelog docs
           git commit --signoff -m "Sync from main"
           git push
