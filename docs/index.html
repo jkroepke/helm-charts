@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>helm-docs values table</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #ffffff;
+        --text: #20242c;
+        --muted: #5f6978;
+        --line: #d9dee8;
+        --error-bg: #fff2f0;
+        --error-text: #9f1d1d;
+        --code-bg: #f1f4f8;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font: 14px/1.5 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      #output {
+        width: 100%;
+        min-height: 100vh;
+        overflow: auto;
+      }
+
+      .message,
+      .error {
+        padding: 16px;
+        color: var(--muted);
+      }
+
+      .error {
+        background: var(--error-bg);
+        color: var(--error-text);
+        white-space: pre-wrap;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      th,
+      td {
+        border-bottom: 1px solid var(--line);
+        padding: 10px 12px;
+        text-align: left;
+        vertical-align: top;
+      }
+
+      th {
+        position: sticky;
+        top: 0;
+        background: #eef3f9;
+        color: #303846;
+        font-size: 12px;
+        text-transform: uppercase;
+      }
+
+      td:first-child {
+        width: 24%;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+        font-size: 13px;
+      }
+
+      td:nth-child(2) {
+        width: 12%;
+        color: var(--muted);
+      }
+
+      td:nth-child(3) {
+        width: 34%;
+      }
+
+      pre {
+        max-width: 520px;
+        max-height: 220px;
+        overflow: auto;
+        margin: 0;
+        border-radius: 6px;
+        padding: 8px;
+        background: var(--code-bg);
+        font: 12px/1.45 ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+        white-space: pre-wrap;
+      }
+
+      h3 {
+        margin: 16px 12px 8px;
+        font-size: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="output"><div class="message">Loading...</div></div>
+
+    <script src="wasm_exec.js"></script>
+    <script>
+      const output = document.getElementById("output");
+
+      function isLocalhost(hostname) {
+        return hostname === "localhost" || hostname === "127.0.0.1" || hostname === "::1" || hostname === "";
+      }
+
+      function showMessage(message, className = "message") {
+        output.innerHTML = "";
+        const element = document.createElement("div");
+        element.className = className;
+        element.textContent = message;
+        output.appendChild(element);
+      }
+
+      function pageContext() {
+        const params = new URLSearchParams(window.location.search);
+        const chart = params.get("chart");
+        const local = isLocalhost(window.location.hostname);
+        const pathParts = window.location.pathname.split("/").filter(Boolean);
+
+        if (!chart) {
+          throw new Error("Missing required query parameter: chart");
+        }
+
+        let org;
+        let repo = pathParts[0];
+
+        if (local) {
+          org = params.get("org");
+          repo = params.get("repo") || repo || "helm-charts";
+          if (!org) {
+            throw new Error("Missing required localhost query parameter: org");
+          }
+        } else {
+          const githubPagesMatch = window.location.hostname.match(/^([^.]+)\.github\.io$/);
+          if (!githubPagesMatch) {
+            throw new Error("This page must be hosted from GitHub Pages or localhost");
+          }
+          org = githubPagesMatch[1];
+          if (!repo) {
+            throw new Error("Could not infer GitHub repository from the URL path");
+          }
+        }
+
+        return { org, repo, chart };
+      }
+
+      function rawValuesURL({ org, repo, chart }) {
+        const safeOrg = encodeURIComponent(org);
+        const safeRepo = encodeURIComponent(repo);
+        const safeChart = chart
+          .split("/")
+          .filter(Boolean)
+          .map((part) => encodeURIComponent(part))
+          .join("/");
+        return `https://raw.githubusercontent.com/${safeOrg}/${safeRepo}/refs/heads/main/charts/${safeChart}/values.yaml`;
+      }
+
+      async function fetchValuesYAML(context) {
+        const response = await fetch(rawValuesURL(context));
+        if (!response.ok) {
+          throw new Error(`Could not fetch values.yaml: HTTP ${response.status}`);
+        }
+        return response.text();
+      }
+
+      async function bootWASM() {
+        if (!WebAssembly.instantiateStreaming) {
+          WebAssembly.instantiateStreaming = async (response, importObject) => {
+            const source = await (await response).arrayBuffer();
+            return WebAssembly.instantiate(source, importObject);
+          };
+        }
+
+        const go = new Go();
+        const result = await WebAssembly.instantiateStreaming(fetch("helm-docs.wasm"), go.importObject);
+        go.run(result.instance);
+      }
+
+      async function render() {
+        const context = pageContext();
+        const valuesYAML = await fetchValuesYAML(context);
+        const result = window.renderHelmDocsValuesTable(valuesYAML);
+        if (!result.ok) {
+          throw new Error(result.error);
+        }
+        output.innerHTML = result.html;
+      }
+
+      bootWASM()
+        .then(render)
+        .catch((error) => showMessage(error.message || String(error), "error"));
+    </script>
+  </body>
+</html>
