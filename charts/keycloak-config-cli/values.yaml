@@ -87,3 +87,10 @@ extraVolumes: ""
 
 # Add additional volumes mounts, e. g. for custom secrets
 extraVolumeMounts: ""
+
+# Node scheduling for the Job pod
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
