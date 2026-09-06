@@ -1,6 +1,6 @@
 # keycloak-config-cli
 
-![Version: 1.3.3](https://img.shields.io/badge/Version-1.3.3-informational?style=flat-square) ![AppVersion: 6.0.1](https://img.shields.io/badge/AppVersion-6.0.1-informational?style=flat-square)
+![Version: 1.3.8](https://img.shields.io/badge/Version-1.3.8-informational?style=flat-square) ![AppVersion: 6.0.1](https://img.shields.io/badge/AppVersion-6.0.1-informational?style=flat-square)
 
 Import JSON-formatted configuration files into Keycloak - Configuration as Code for Keycloak.
 
@@ -15,7 +15,7 @@ helm install keycloak-config-cli jkroepke/keycloak-config-cli
 
 ## Maintainers
 
-| Name | Email | Url |
+| Name | Email | URL |
 | ---- | ------ | --- |
 | jkroepke | <github@jkroepke.de> | <https://github.com/jkroepke> |
 
@@ -27,6 +27,7 @@ helm install keycloak-config-cli jkroepke/keycloak-config-cli
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
+| affinity | object | `{}` |  |
 | annotations."helm.sh/hook" | string | `"post-install,post-upgrade,post-rollback"` |  |
 | annotations."helm.sh/hook-delete-policy" | string | `"hook-succeeded,before-hook-creation"` |  |
 | annotations."helm.sh/hook-weight" | string | `"5"` |  |
@@ -50,9 +51,11 @@ helm install keycloak-config-cli jkroepke/keycloak-config-cli
 | image.tag | string | `"{{ .Chart.AppVersion }}-17.0.1"` |  |
 | labels | object | `{}` |  |
 | nameOverride | string | `""` |  |
+| nodeSelector | object | `{}` |  |
 | podAnnotations | object | `{}` |  |
 | podLabels | object | `{}` |  |
 | resources | object | `{}` |  |
 | secrets | object | `{}` |  |
 | securityContext | object | `{}` |  |
 | serviceAccount | string | `""` |  |
+| tolerations | list | `[]` |  |
