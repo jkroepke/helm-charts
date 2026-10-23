@@ -10,7 +10,7 @@ on:
 jobs:
   check-multiple-chart-changes:
     name: Check Multiple Chart Changes
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     permissions:
       contents: read
     outputs:
@@ -63,7 +63,7 @@ jobs:
     name: Check Title
     needs: check-multiple-chart-changes
     if: needs.check-multiple-chart-changes.outputs.changed == 'true'
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     permissions:
       contents: read
     steps:
