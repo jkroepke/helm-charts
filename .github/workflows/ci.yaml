@@ -9,7 +9,7 @@ on:
 jobs:
   lint-test:
     # name: Lint and Test Charts
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     env:
       CT_BUILD_ID: '${{ github.run_id }}'
       CT_CONFIG: charts/ct.yaml
@@ -81,7 +81,7 @@ jobs:
 
   super-linter:
     name: Lint Code Base
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     permissions:
       contents: read
     steps:
