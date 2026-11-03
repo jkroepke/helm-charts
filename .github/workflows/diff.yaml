@@ -140,6 +140,17 @@ jobs:
       - name: Apply Gateway API CRDs
         run: kubectl apply -k https://github.com/kubernetes-sigs/gateway-api/config/crd
 
+      - name: Install cert-manager
+        if: startsWith(matrix.valuefile, 'charts/amazon-eks-pod-identity-webhook/ci/')
+        run: |
+          helm install cert-manager oci://quay.io/jetstack/charts/cert-manager \
+            --version v1.21.3 \
+            --namespace cert-manager \
+            --create-namespace \
+            --set crds.enabled=true \
+            --wait \
+            --wait-for-jobs
+
       - name: Run diff for value file
         env:
           value_file: "${{ matrix.valuefile }}"
