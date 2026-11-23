@@ -19,6 +19,8 @@ podDisruptionBudget:
   enabled: false
   minAvailable:
   maxUnavailable:
+  # -- https://kubernetes.io/docs/tasks/run-application/configure-pdb/#unhealthy-pod-eviction-policy (IfHealthyBudget or AlwaysAllow)
+  unhealthyPodEvictionPolicy: ""
 
 # -- PriorityClass applied to deployment
 priorityClassName: ""

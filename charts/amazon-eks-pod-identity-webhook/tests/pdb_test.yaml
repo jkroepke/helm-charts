@@ -1,0 +1,24 @@
+suite: pod disruption budget
+templates:
+  - pdb.yaml
+tests:
+  - it: omits unhealthyPodEvictionPolicy by default
+    set:
+      replicaCount: 2
+      podDisruptionBudget:
+        enabled: true
+        minAvailable: 1
+    asserts:
+      - notExists:
+          path: spec.unhealthyPodEvictionPolicy
+  - it: renders unhealthyPodEvictionPolicy when set
+    set:
+      replicaCount: 2
+      podDisruptionBudget:
+        enabled: true
+        minAvailable: 1
+        unhealthyPodEvictionPolicy: AlwaysAllow
+    asserts:
+      - equal:
+          path: spec.unhealthyPodEvictionPolicy
+          value: AlwaysAllow
